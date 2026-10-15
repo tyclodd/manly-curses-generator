@@ -7,8 +7,8 @@
   const label=document.getElementById('portraitToggleLabel');
   const bubble=document.getElementById('mascotQuote');
   if(!arena || !image || !btn)return;
-  const photoSource='https://manly-curses-generator.rainyrhino16.chatgpt.site/assets/tye-capybara-photo.webp';
-  const mascotSource='https://manly-curses-generator.rainyrhino16.chatgpt.site/assets/tye-mascot.webp';
+  const photoSource='assets/tye-capybara-photo.webp';
+  const mascotSource='assets/tye-mascot.webp';
   const photoAlt='Tye Clodd in a fluffy orange animal-ear hat holding a turquoise plush dinosaur';
   const cartoonAlt='Illustrated Tye Clodd in a NOT A MANCHILD shirt and blue wrestling gloves';
   let photoMode=true;
