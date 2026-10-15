@@ -1,0 +1,165 @@
+/* COMMUNITY EDITION · Achievements, submission lab, merchandising. */
+.main-tabs{flex-wrap:wrap}.community-tab{background:#fff4c7;color:#6d3d00}
+.tab.community-tab.is-active{background:#ffdc43}
+.achievement-bar{display:flex;gap:12px;justify-content:space-between;align-items:center;margin:16px 0 8px;color:#f7faff;flex-wrap:wrap;font-size:12px}
+.achievement-bar strong{border:2px solid #fff5be;background:#195995;padding:8px 13px;border-radius:999px;color:#fff}
+.achievement-bar span{color:#c3eaff;font-weight:700}
+.badge-grid{grid-template-columns:repeat(7,minmax(0,1fr))}
+.badge-item{min-height:163px;padding:11px 7px 10px;justify-content:flex-start}
+.badge-item.unlocked{border-color:#fbd63a;box-shadow:0 3px 0 #091a35,0 0 15px #edbd2933}
+.badge-item .badge-meta{flex:1}
+.badge-actions{display:flex;width:100%;gap:4px}
+.badge-share{width:100%;border:2px solid #082453;border-radius:8px;padding:7px 4px;background:#ffdb3c;box-shadow:0 3px 0 #051735;color:#092650;font-weight:1000;font-size:10px;cursor:pointer}
+.badge-share:hover{transform:translateY(-2px);box-shadow:0 5px 0 #051735}
+.badge-share:active{transform:translateY(2px);box-shadow:0 1px 0 #051735}
+.badge-share:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.badge-share-dialog[hidden]{display:none}
+.badge-share-dialog{position:fixed;inset:0;background:rgba(2,11,34,.84);display:grid;place-items:center;z-index:170;padding:18px;backdrop-filter:blur(10px)}
+.badge-dialog-card{width:min(100%,490px);max-height:90dvh;overflow:auto;position:relative;border:5px solid #061b42;background:linear-gradient(160deg,#64d4ff,#1475d1 56%,#0b2c6b);border-radius:26px;padding:36px 22px 28px;text-align:center;color:white;box-shadow:12px 13px 0 #ffd338}
+.badge-dialog-close{position:absolute;right:11px;top:11px;background:#fff;border:2px solid #0b326a;border-radius:50%;width:36px;height:36px;font-size:26px;line-height:1;color:#092850;cursor:pointer}
+.badge-dialog-kicker{font-size:13px;font-weight:1000;letter-spacing:2px}
+.badge-preview-icon{display:grid;place-items:center;width:140px;height:140px;border-radius:50%;margin:20px auto;background:linear-gradient(145deg,#ffed84,#ffca27);box-shadow:0 9px 0 #091e44;font-size:64px;border:7px solid #0b2d66;animation:badge-arrive .65s cubic-bezier(.2,1.3,.4,1) both}
+@keyframes badge-arrive{from{opacity:0;transform:rotate(-30deg) scale(.5)}to{opacity:1;transform:rotate(0) scale(1)}}
+.badge-dialog-card h2{font:1000 clamp(36px,7vw,56px)/1 Impact,'Arial Black',sans-serif;text-shadow:4px 4px 0 #082a61;margin:10px auto}
+.badge-dialog-card p{font-weight:700}
+.badge-preview-brand{background:#082c64;padding:11px;border:2px solid #93dcff;border-radius:10px;margin:20px 0;font-size:13px;font-weight:1000}
+.badge-preview-brand b{color:#ffda45}
+.badge-dialog-actions{display:flex;gap:9px;justify-content:center}
+.badge-dialog-actions button{background:#ffdb45;color:#092d5a;padding:15px 10px;border:3px solid #051e49;border-radius:13px;box-shadow:0 4px 0 #051b3a;font-weight:1000;flex:1;cursor:pointer}
+.badge-dialog-actions button:last-child{background:#e8fcff}
+.badge-dialog-note{font-size:11px;font-weight:500!important}
+.support-card.merch-card{background:linear-gradient(155deg,#fffdf2,#d9efff)}
+.merch-card .support-icon{background:#f9ca3a;color:#0a3164}
+.merch-cta{background:#ffdc40!important;color:#0d2c56!important}
+.view-suggest{max-width:1160px;margin:0 auto;padding-bottom:40px}
+.suggest-layout{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(250px,.85fr);gap:22px;margin:30px 0}
+.suggest-workbench{border:4px solid #0a2f64;background:#fefcf2;border-radius:26px;box-shadow:9px 11px 0 #072d62;padding:clamp(20px,3vw,38px);color:#0a2a5b}
+.form-flag,.side-kicker{font-size:11px;font-weight:1000;letter-spacing:2px;color:#277aba}
+.suggest-workbench h3{font:1000 clamp(36px,5vw,60px)/.95 Impact,'Arial Black',sans-serif;margin:15px 0;color:#0b3268}
+.suggest-workbench>p{font-size:14px;color:#47749e;font-weight:650}
+.suggest-workbench form{display:flex;flex-direction:column;gap:10px;margin-top:26px}
+.suggest-workbench label:not(.agree-line){font-size:12px;font-weight:1000;letter-spacing:1px;margin-top:15px}
+.suggest-workbench select,.suggest-workbench textarea{box-sizing:border-box;width:100%;border:3px solid #0b3568;background:white;box-shadow:3px 4px 0 #a6cadd;border-radius:13px;padding:14px;font:650 15px/1.5 system-ui,sans-serif;color:#0c2e5d}
+.suggest-workbench textarea{resize:vertical;min-height:146px}
+.suggest-workbench select:focus,.suggest-workbench textarea:focus{outline:3px solid #f3cf46;outline-offset:2px}
+.field-counter{display:flex;justify-content:space-between;gap:12px;font-size:11px;color:#416b99}
+.similar-box{border:2px dashed #77add0;border-radius:16px;background:#e9f8ff;padding:16px;margin:14px 0}
+.similar-title{font-size:12px;font-weight:1000;letter-spacing:1px}
+.similar-box p{font-size:12px;font-weight:750;line-height:1.5;margin:9px 0}
+.similar-list{display:grid;gap:8px}
+.similar-row{padding:9px;background:#fff;border:1px solid #a9d0e9;border-radius:10px;font-size:12px;display:grid;gap:4px}
+.similar-row strong{color:#2576a9;font-size:10px}
+.agree-line{display:flex;align-items:flex-start;gap:11px;font-size:12px;font-weight:650;margin:6px 0}
+.agree-line input{width:20px;height:20px;flex:none;accent-color:#166bbe;margin:2px 0}
+.submit-suggest,.copy-suggest{border:3px solid #09264c;border-radius:13px;cursor:pointer;font-weight:1000;padding:15px;font-size:15px}
+.submit-suggest{background:#ffdc3d;color:#0e2c56;box-shadow:4px 5px 0 #08234e;display:flex;justify-content:center;gap:15px}
+.copy-suggest{background:#fff;color:#0f457b}
+.mail-disclaimer{font-size:12px;font-weight:500;line-height:1.65;color:#38638f}
+.suggest-side{background:#0a2d61;color:#fff;border:3px solid #ffe352;border-radius:24px;padding:24px;box-shadow:6px 7px 0 #09234a;align-self:start}
+.side-illustration{display:flex;justify-content:space-around;align-items:center;font-size:50px;color:#ffe24c;min-height:130px;background:radial-gradient(circle,#267fbc,#092e67);border-radius:16px}
+.side-illustration span{font-size:74px;animation:idea-float 2.9s ease-in-out infinite}
+@keyframes idea-float{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(6deg)}}
+.suggest-side .side-kicker{color:#ffde4a;display:block;margin-top:22px}
+.suggest-side h3{font:1000 41px/.95 Impact,'Arial Black',sans-serif}
+.suggest-side ol{padding-left:20px;display:grid;gap:16px;font-size:14px;line-height:1.55}
+.suggest-side li::marker{color:#ffda4b;font-weight:1000}
+.side-footer{background:#15477c;padding:15px;border-radius:12px;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+.footer-suggest{background:#ffdb45!important;color:#10315d!important}
+@media(max-width:1000px){.badge-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:740px){.badge-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.badge-item{min-height:150px}.suggest-layout{grid-template-columns:1fr}.main-tabs{flex-wrap:nowrap}.tab{font-size:9px;padding:9px 3px}}
+@media(max-width:460px){.badge-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.badge-item{min-height:152px}.tab{font-size:8px;gap:2px;padding:9px 2px}.tab span:first-child{font-size:12px}.tab-count{display:none}.achievement-bar{font-size:10px}.suggest-workbench{padding:19px}.badge-dialog-actions{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){.side-illustration span,.badge-preview-icon{animation:none!important}}
+.user-reduce-motion .side-illustration span,.user-reduce-motion .badge-preview-icon{animation:none!important}
+
+/* MANLINESS LEVELS · monthly maturation + annual punctuation */
+.manliness-zone{position:relative;isolation:isolate;overflow:hidden;color:#fff;margin:27px 0 30px;border:4px solid #ffe55b;border-radius:27px;background:radial-gradient(circle at 92% 8%,#147ec4 0%,transparent 36%),linear-gradient(145deg,#09234f 8%,#144b8b 58%,#071c46);box-shadow:7px 9px 0 #031a43;padding:clamp(17px,3.5vw,32px)}
+.manliness-zone:before{content:'';pointer-events:none;position:absolute;inset:0;z-index:-1;background:repeating-linear-gradient(155deg,transparent 0 46px,rgba(79,203,252,.07) 48px 52px)}
+.manliness-stars{position:absolute;right:20px;top:65px;opacity:.13;color:#ffe15b;font-size:50px;transform:rotate(-18deg)}
+.manliness-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.manliness-kicker{font-size:11px;font-weight:1000;letter-spacing:1.5px;color:#ffe262}
+.manliness-level{border:1px solid #75cdfb;background:#063061;padding:8px 11px;border-radius:999px;font-size:11px;font-weight:1000;color:#fff}
+.manliness-hero{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:23px 0 18px}
+.manliness-intro{font-size:11px;letter-spacing:1.4px;font-weight:1000;color:#95dcff}
+.manliness-hero h3{max-width:790px;font:1000 clamp(34px,5.6vw,73px)/.98 Impact,'Arial Black',system-ui,sans-serif;letter-spacing:.5px;margin:9px 0 13px;color:#ffe057;text-shadow:4px 5px 0 #051638;overflow-wrap:anywhere}
+.manliness-points{display:inline-block;font-size:12px;letter-spacing:.5px;font-weight:1000;background:#f9db46;color:#072752;padding:8px 11px;border-radius:10px;border:2px solid #061a3c;box-shadow:2px 3px 0 #02152c}
+.manliness-activity{color:#c5eaff;font-weight:700;font-size:12px;margin:16px 0 0}
+.manliness-emblem{font-size:clamp(58px,8vw,120px);filter:drop-shadow(0 9px 0 #071633);transform:rotate(13deg);animation:manliness-bob 3.5s ease-in-out infinite}
+@keyframes manliness-bob{0%,100%{transform:translateY(0) rotate(12deg)}50%{transform:translateY(-9px) rotate(-9deg)}}
+.manliness-journey>span{font-size:12px;font-weight:1000;color:#ffe46c}
+.manliness-meter{margin-top:9px;height:17px;border-radius:100px;border:3px solid #94d7ff;background:#071e49;overflow:hidden}
+.manliness-meter>div{height:100%;width:0;background:linear-gradient(90deg,#f9c82a,#fff2a1,#f9c82a);transition:width .65s ease;border-radius:100px}
+.manliness-next{display:flex;gap:15px;align-items:center;justify-content:space-between;margin:20px 0 12px;flex-wrap:wrap}
+.manliness-next strong{font-size:14px;color:#fff}
+.manliness-next p{font-size:12px;line-height:1.5;color:#b6dcfb;margin:6px 0}
+.share-manliness{border:3px solid #052149;border-radius:13px;background:#ffe04b;box-shadow:3px 4px 0 #061533;color:#072650;font-size:12px;font-weight:1000;padding:14px 15px;cursor:pointer;white-space:nowrap}
+.share-manliness:hover{transform:translateY(-2px)}
+.share-manliness:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.manliness-caption{font-size:12px;color:#b5d6ee;line-height:1.6;border-top:1px solid #3474a8;padding-top:12px}
+.manliness-rail-label{display:flex;justify-content:space-between;font-size:11px;font-weight:1000;letter-spacing:1.3px;color:#ffdd65;margin:18px 0 9px}
+.manliness-rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(145px,22%);gap:9px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-color:#f8d449 #062753;padding-bottom:12px}
+.rank-tile{scroll-snap-align:start;display:flex;flex-direction:column;gap:8px;min-height:108px;border:2px solid #5aa5ce;background:#103769;border-radius:12px;padding:13px 11px;opacity:.68}
+.rank-tile span{font-size:11px;font-weight:1000;color:#b4d9fb}
+.rank-tile b{font:900 14px/1.2 system-ui,sans-serif;color:#fff;flex:1}
+.rank-tile small{font-weight:850;font-size:10px;color:#a1d5eb}
+.rank-tile.earned{opacity:1;background:#1a689e;border-color:#8fd6fa}
+.rank-tile.current{opacity:1;background:#fae17b;border-color:#fff8bd;box-shadow:inset 0 0 0 3px #bc8034}
+.rank-tile.current b,.rank-tile.current span,.rank-tile.current small{color:#0e305b}
+.rank-tile.annual.earned{background:#bc8c13;border-color:#f3e485;opacity:1}.rank-tile.annual.current{background:#ffe371}
+.manliness-years{margin:12px 0 0;color:#daecfb;font-size:11px;line-height:1.7}
+.manliness-years b{color:#fff}
+@media(max-width:680px){.manliness-rail{grid-auto-columns:minmax(145px,61%)}.manliness-emblem{font-size:60px}.manliness-next{align-items:stretch}.share-manliness{width:100%}.manliness-zone{border-radius:21px}.manliness-hero h3{font-size:clamp(32px,10vw,50px)}}
+@media(prefers-reduced-motion:reduce){.manliness-emblem{animation:none}.manliness-meter>div{transition:none}}
+.user-reduce-motion .manliness-emblem{animation:none}.user-reduce-motion .manliness-meter>div{transition:none}
+
+/* v4.2 Six-year metallic progression, animated personal MM crest */
+.manliness-zone {--rank-metal:#50dcff;--rank-light:#c0f4ff;--rank-shadow:#126cb7;--rank-ink:#07183f;--rank-glow:#55ddff55}
+.manliness-zone.rank-mono {--rank-metal:#edeef1;--rank-light:#ffffff;--rank-shadow:#6c707d;--rank-ink:#12151e;--rank-glow:#eeeeee70}
+.manliness-zone.rank-bronze {--rank-metal:#d28a48;--rank-light:#ffd4a3;--rank-shadow:#7f3b18;--rank-ink:#351500;--rank-glow:#d8895d77}
+.manliness-zone.rank-silver {--rank-metal:#d6e2ec;--rank-light:#ffffff;--rank-shadow:#7e96af;--rank-ink:#213c50;--rank-glow:#cbf5fa78}
+.manliness-zone.rank-gold {--rank-metal:#ffd749;--rank-light:#fff4b9;--rank-shadow:#9b5910;--rank-ink:#503000;--rank-glow:#f4d85fa9}
+.manliness-zone.rank-platinum {--rank-metal:#b5dbe9;--rank-light:#fcffff;--rank-shadow:#5380a0;--rank-ink:#173b58;--rank-glow:#cceafbb9}
+.manliness-zone.rank-diamond {--rank-metal:#8aedff;--rank-light:#ffffff;--rank-shadow:#5675f0;--rank-ink:#141f67;--rank-glow:#97d8ffed; border-color:#b4f4ff; background:radial-gradient(ellipse at 86% 4%,#446bd0 0,transparent 48%),linear-gradient(138deg,#081d4b,#252771 60%,#0a3569);}
+.manliness-hero {align-items:center}
+.manliness-hero h3 {color:var(--rank-metal);text-shadow:3px 4px 0 var(--rank-ink),0 0 33px var(--rank-glow)}
+.manliness-ribbon {display:inline-block;font:1000 12px/1.2 system-ui,sans-serif;letter-spacing:1.15px; color:var(--rank-ink);background:linear-gradient(135deg,var(--rank-metal),var(--rank-light),var(--rank-shadow));border:2px solid var(--rank-light);padding:7px 11px;margin:0 10px 12px 0;border-radius:8px;box-shadow:3px 3px 0 #081637}
+.manliness-chapter {color:var(--rank-light);font-weight:950;font-size:12px;letter-spacing:1px}
+.metal-crest {width:170px;flex:0 0 170px;min-height:178px;position:relative;display:flex;align-items:center;flex-direction:column;justify-content:center}
+/* Shadow the opaque shield only, so captions do not gain a duplicate baseline. */
+.metal-crest-shield {filter:drop-shadow(0 6px 0 #030d20)}
+.metal-crest-center {position:relative;width:122px;height:122px;border-radius:30px 30px 43px 43px;clip-path:polygon(50% 0,95% 16%,93% 72%,50% 100%,7% 72%,5% 16%);background:linear-gradient(130deg,var(--rank-shadow) 0%,var(--rank-metal) 32%,var(--rank-light) 51%,var(--rank-metal) 68%,var(--rank-shadow) 100%);box-shadow:inset 0 0 20px #fff6;display:flex;align-items:center;justify-content:center;flex-direction:column;color:var(--rank-ink);animation:manliness-crest-float 4s ease-in-out infinite}
+.metal-crest-center:after{content:'';position:absolute;inset:8px;border:3px solid var(--rank-ink);opacity:.4;clip-path:polygon(50% 0,95% 16%,93% 72%,50% 100%,7% 72%,5% 16%);pointer-events:none}
+.metal-crest-center>span {font-size:29px;line-height:1}
+.metal-crest-center b {font:1000 35px/.95 Impact,'Arial Black',system-ui,sans-serif;letter-spacing:1px}
+.metal-crest-caption {margin-top:8px;color:var(--rank-light);font-size:12px;font-weight:1000;letter-spacing:1.6px}
+.metal-crest-year {color:#fff;font-size:10px;font-weight:850;opacity:.82;margin-top:3px}
+.manliness-zone.rank-diamond .metal-crest-center {animation:diamond-pulse 3s ease-in-out infinite}
+.rank-boss {width:fit-content;background:linear-gradient(90deg,#ccffff,#8ccaff,#efe7ff,#d0f8ff);border:3px solid white;color:#162b66;font-size:13px;font-weight:1000;border-radius:14px;padding:12px 15px;box-shadow:0 0 26px #b8dfff8a;animation:metal-sparkle 2s ease-in-out infinite}
+.rank-boss[hidden]{display:none!important}
+.shard-topline {font-size:11px;letter-spacing:1.2px;color:var(--rank-light);font-weight:1000;margin:16px 0 9px}
+.manliness-shards {display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:5px}
+.manliness-shard {min-width:0;padding:6px 1px;font-size:17px;text-align:center;border:2px solid #5a96bf;background:#061c42;border-radius:8px;color:#517ba6;transition:transform .25s ease,background .25s ease}
+.manliness-shard.earned {color:var(--rank-ink);border-color:var(--rank-light);background:var(--rank-metal);box-shadow:0 2px 0 #102040}
+.manliness-shard.latest {animation:metal-sparkle 2.5s ease-in-out infinite}
+.metal-roadmap-head {font-weight:1000;letter-spacing:1.2px;font-size:13px;margin:29px 0 11px;color:#fff}
+.metal-roadmap-head span {display:block;font-size:10px;letter-spacing:.5px;color:#b3e0fa;margin-top:5px}
+.metal-roadmap {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.metal-stop {--metal:#e4f0ff;--lite:#fff;--shade:#99abc7;min-width:0;position:relative;display:flex;align-items:center;flex-direction:column;gap:5px;min-height:150px;padding:12px 8px;border-radius:16px;border:2px solid #799cc4;background:linear-gradient(148deg,#102b50,#06132e);opacity:.55;text-align:center;filter:grayscale(.4)}
+.metal-stop.earned {opacity:1;filter:none;border-color:var(--metal)}
+.metal-stop.current {box-shadow:0 0 0 2px var(--metal),0 0 23px var(--metal)}
+.metal-stop span {font-size:10px;color:#c3dfff;font-weight:1000;letter-spacing:.5px}
+.metal-stop>b {font-size:36px;color:var(--metal);text-shadow:0 3px 0 #05122a;line-height:1.2}
+.metal-stop strong {font:1000 16px/1 Impact,'Arial Black',sans-serif;color:var(--metal);letter-spacing:.8px}
+.metal-stop small {max-width:100%;font-size:9px;line-height:1.2;font-weight:850;color:#deebfd;overflow-wrap:anywhere}
+.metal-mono {--metal:#f5f5f5}.metal-bronze {--metal:#df945b}.metal-silver {--metal:#dbe5f3}.metal-gold {--metal:#f8d54f}.metal-platinum {--metal:#baf1f4}.metal-diamond {--metal:#78e1ff;background:linear-gradient(145deg,#183a7e,#352171)}
+@keyframes manliness-crest-float {0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-7px) rotate(3deg)}}
+@keyframes metal-sparkle {0%,100%{opacity:.75;transform:scale(.95)}50%{opacity:1;transform:scale(1.15)}}
+@keyframes diamond-pulse {0%,100%{filter:drop-shadow(0 0 7px #97edff);transform:scale(.96)}50%{filter:drop-shadow(0 0 25px #bbf1ff);transform:scale(1.04)}}
+@media(max-width:680px){.metal-roadmap {grid-template-columns:repeat(2,minmax(0,1fr))}.metal-crest {width:105px;flex:0 0 105px;min-height:133px}.metal-crest-center {width:88px;height:88px}.metal-crest-center>b {font-size:26px}.metal-crest-center>span{font-size:20px}.metal-crest-caption{font-size:9px}.manliness-hero h3{font-size:clamp(25px,8vw,44px)}.manliness-shard{font-size:12px;padding:7px 0}.manliness-ribbon{font-size:10px}}
+@media(max-width:360px){.metal-roadmap {gap:6px}.metal-stop{min-height:142px;padding:9px 5px}.manliness-hero{gap:2px}.metal-crest {width:80px;flex:0 0 80px}.metal-crest-center{width:72px;height:72px}.manliness-shards{gap:3px}}
+@media(prefers-reduced-motion:reduce){.metal-crest-center,.rank-boss,.manliness-shard.latest {animation:none!important}}
+.user-reduce-motion .metal-crest-center,.user-reduce-motion .rank-boss,.user-reduce-motion .manliness-shard.latest {animation:none!important}
+
+/* In-game rank navigation + mobile typography polish */
+.manliness-jump{display:block;margin:14px auto 0;background:#082d65;color:#ffe056;border:2px solid #83d6ff;border-radius:999px;padding:11px 17px;font-size:11px;font-weight:1000;letter-spacing:1px;cursor:pointer;box-shadow:0 4px 0 #08132d;transition:transform .2s ease}
+.manliness-jump:hover{transform:translateY(-3px)}.manliness-jump:focus-visible{outline:3px solid #ffca36;outline-offset:3px}
+@media(max-width:680px){.manliness-hero h3{font-size:clamp(23px,6.3vw,36px);overflow-wrap:normal;word-break:normal}.manliness-hero{align-items:flex-start}.metal-crest{margin-top:20px}}

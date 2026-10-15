@@ -1,0 +1,48 @@
+
+/* CAPYBARA PHOTO TRIAL: alternate art direction over the original working game */
+.arena.photo-mode{
+ background:#042343;
+ border:5px solid #072247;
+ border-radius:29px;
+ box-shadow:7px 9px 0 #072247,0 16px 35px #032d5c45;
+ filter:none;
+ overflow:hidden;
+}
+.arena.photo-mode:before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;
+ background:linear-gradient(0deg,#092044b8 0%,transparent 30%),
+ radial-gradient(circle at 15% 72%,#28d7cc30,transparent 40%);
+}
+.arena.photo-mode:after{z-index:4;pointer-events:none;background:linear-gradient(0deg,#00275778,transparent 60%);bottom:0;height:40%;}
+.arena.photo-mode .mascot-wrap{position:absolute;inset:0;z-index:2;display:block;overflow:hidden;animation:none;transform:none;will-change:auto;}
+.arena.photo-mode .mascot{width:100%;height:100%;max-height:none;object-fit:cover;object-position:center 43%;filter:contrast(1.08) saturate(1.13) brightness(1.04);transform:scale(1.035);animation:photo-sway 8s ease-in-out infinite alternate;}
+.arena.photo-mode .arena-nameplate{z-index:9;bottom:18px;left:10%;right:10%;height:68px;background:linear-gradient(160deg,#fff09d 0%,#ffbb19 100%);box-shadow:5px 6px 0 #061736;}
+.arena.photo-mode .speech-bubble{z-index:9;top:18px;left:14px;max-width:166px;padding:12px 10px;font-size:17px;line-height:1.1;background:#eaffff;transform:rotate(-6deg);}
+.arena.photo-mode .speech-bubble::after{background:#eaffff}
+.arena.photo-mode .arena-halo,.arena.photo-mode .ring-line,.arena.photo-mode .arena-dots{display:none}
+.arena.photo-mode .arena-star{z-index:7;filter:drop-shadow(2px 3px 0 #071b42)}
+.arena.photo-mode .arena-zap{z-index:7;left:0;top:53%;font-size:76px}
+.arena.photo-mode .arena-impact{z-index:10}
+.portrait-toggle{position:absolute;z-index:11;right:12px;top:13px;display:flex;align-items:center;gap:6px;padding:10px 11px;
+ border:2px solid #05254e;border-radius:24px;background:#dcfcff;color:#04264f;font-size:10px;font-weight:1000;letter-spacing:.45px;
+ box-shadow:3px 4px 0 #05254e;cursor:pointer;transition:transform .16s,background .16s;}
+.portrait-toggle:hover{background:#fff2a7;transform:translateY(-2px)}
+.portrait-toggle span:first-child{color:#ec9400}
+.capybara-sticker{position:absolute;z-index:10;bottom:105px;left:12px;transform:rotate(-8deg);padding:8px 10px;
+ border:3px solid #041d40;border-radius:8px;background:#65f2dd;color:#062a49;font:900 12px Impact,"Arial Black",sans-serif;letter-spacing:1px;box-shadow:3px 3px 0 #041d40;}
+.arena:not(.photo-mode) .capybara-sticker{display:none}
+.arena:not(.photo-mode) .mascot-wrap{animation:mascot-breathe 4s ease-in-out infinite}
+.arena.photo-mode.impact .mascot-wrap{animation:photo-hit .6s cubic-bezier(.18,.75,.2,1) 1}
+@keyframes photo-sway{from{transform:scale(1.035) translateY(0)}to{transform:scale(1.065) translateY(-6px)}}
+@keyframes photo-hit{0%,100%{transform:none}25%{transform:translateY(-12px) rotate(-1deg)}65%{transform:translateY(5px) rotate(1deg)}}
+@media(max-width:750px){.arena.photo-mode{height:435px;min-height:0;margin:6px 4px 14px;border-radius:25px;flex:none;box-shadow:4px 6px 0 #072247}
+ .arena.photo-mode .mascot{object-position:center 41%}.arena.photo-mode .speech-bubble{font-size:14px;max-width:152px;top:18px;left:11px}
+ .arena.photo-mode .arena-nameplate{bottom:10px;height:59px;left:15%;right:15%}
+ .arena.photo-mode .capybara-sticker{bottom:81px;font-size:10px;left:9px}
+ .portrait-toggle{top:14px;right:9px;padding:8px;font-size:9px}}
+@media(max-width:480px){.arena.photo-mode{height:390px;margin:7px 4px 13px}
+ .arena.photo-mode .mascot{object-position:center 42%}
+ .arena.photo-mode .speech-bubble{font-size:12px;top:15px;max-width:123px;}
+ .arena.photo-mode .arena-nameplate{left:13%;right:13%}
+ .arena.photo-mode .arena-nameplate strong{font-size:27px}
+ .arena.photo-mode .capybara-sticker{bottom:81px}}
+@media(prefers-reduced-motion:reduce){.arena.photo-mode .mascot{animation:none!important}}

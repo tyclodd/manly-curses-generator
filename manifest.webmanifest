@@ -1,0 +1,43 @@
+{
+  "id": "./",
+  "name": "Manly Curses Generator — Tye Clodd",
+  "short_name": "Manly Curses",
+  "description": "2,000 harmless curses, community suggestions, shareable achievements, photo character, Curse Duel, and looping theme song.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#48b7f9",
+  "theme_color": "#071b3e",
+  "orientation": "any",
+  "lang": "en",
+  "categories": [
+    "entertainment",
+    "games"
+  ],
+  "icons": [
+    {
+      "src": "assets/icon-official-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-official-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-official-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/icon-official-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
