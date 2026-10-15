@@ -822,7 +822,7 @@
     ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=thickness;ctx.stroke();}
   }
   function graphicImage(url) {
-    return new Promise((resolve,reject)=>{const img = new Image();img.onload=()=>resolve(img);img.onerror=reject;img.src=url;});
+    return new Promise((resolve,reject)=>{const img = new Image();img.crossOrigin='anonymous';img.onload=()=>resolve(img);img.onerror=reject;img.src=url;});
   }
   async function saveCard() {
     try {
@@ -850,7 +850,7 @@
       lines.forEach((line,i)=>ctx.fillText(line,540,firstBaseline+i*lh));
       ctx.beginPath();ctx.setLineDash([14,11]);ctx.strokeStyle='#8ab9d6';ctx.lineWidth=3;ctx.moveTo(100,902);ctx.lineTo(980,902);ctx.stroke();ctx.setLineDash([]);
       ctx.font='1000 24px system-ui';ctx.textAlign='left';ctx.fillStyle='#376d9e';ctx.fillText('CURSE #'+padded(curse.id),100,943);ctx.textAlign='right';ctx.font='1000 19px system-ui';ctx.fillText(curse.category.toUpperCase(),981,943);
-      ctx.save();ctx.beginPath();ctx.rect(0,988,1080,362);ctx.clip();try{const img=await graphicImage('assets/tye-mascot.webp');ctx.drawImage(img,710,987,230,488);}catch{}ctx.restore();
+      ctx.save();ctx.beginPath();ctx.rect(0,988,1080,362);ctx.clip();try{const img=await graphicImage('https://manly-curses-generator.rainyrhino16.chatgpt.site/assets/tye-mascot.webp');ctx.drawImage(img,710,987,230,488);}catch{}ctx.restore();
       box(ctx,80,1090,680,135,22,'#ffdd39','#082353',8);
       ctx.textAlign='center';ctx.fillStyle='#0b2e63';ctx.font='1000 61px Impact,Arial Black,sans-serif';ctx.fillText('BY TYE CLODD',410,1170);
       ctx.font='1000 22px system-ui';ctx.fillText('PETTY. HARMLESS. DEEPLY INCONVENIENT.',415,1205);
