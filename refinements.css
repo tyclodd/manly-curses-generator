@@ -51,8 +51,8 @@
 @media(prefers-reduced-motion:reduce){.creator-socials a:hover{transform:none}}
 
 /* Favorites collection and shared Duel ranking. */
-.favorites-stat{appearance:none;background:transparent;color:inherit;font:inherit;border:0;cursor:pointer;text-align:left;border-inline:2px solid #9cc6e7}
-.favorites-stat:hover{background:#fff3b5}.favorites-stat:focus-visible,.ranking-heart:focus-visible,.ranking-refresh:focus-visible{outline:3px solid #ee8d12;outline-offset:4px}
+.favorites-stat{appearance:none;background:transparent;color:#fff;font:inherit;border:0;cursor:pointer;text-align:left;border-inline:2px solid #9cc6e7}
+.favorites-stat:hover{background:#124575}.favorites-stat:focus-visible,.ranking-heart:focus-visible,.ranking-refresh:focus-visible{outline:3px solid #ee8d12;outline-offset:4px}
 .view-favorites .vault-toolbar{align-items:center;margin-bottom:28px}.view-favorites .vault-results{padding:12px 0}
 .favorites-empty{grid-column:1/-1;background:#fffefa;border:3px dashed #0b4c89;border-radius:22px;padding:44px 24px;text-align:center;color:#123d72}
 .favorites-empty h3{font-size:24px;margin:0 0 12px}.favorites-empty p{font-weight:650;line-height:1.6}.favorites-empty button{display:inline-block;min-height:44px;margin-top:8px}
