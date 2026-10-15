@@ -1,9 +1,9 @@
 /* Offline game assets, navigation fallback, and cached soundtrack seeking. */
-const RELEASE = '4.3.2';
+const RELEASE = '4.4.0';
 const CACHE = 'manly-curses-diamond-v'+RELEASE;
 const APP_FILES = [
  './', './index.html', './style.css', './v3-design.css', './app.js', './config.js',
- './curses-data.js', './categories-data.js', './community.css', './refinements.css', './manifest.webmanifest',
+ './curses-data.js', './categories-data.js', './daily-curses-loader.js', './daily-curses.json', './community.css', './refinements.css', './manifest.webmanifest',
  './assets/tye-mascot.webp', './favicon.ico', './assets/favicon-official-16.png', './assets/favicon-official-32.png', './assets/favicon-official-48.png',
  './assets/apple-touch-icon-official-180.png', './assets/icon-official-192.png', './assets/icon-official-512.png',
  './assets/icon-official-maskable-192.png', './assets/icon-official-maskable-512.png',
@@ -25,10 +25,10 @@ self.addEventListener('fetch', event => {
   const cache=await caches.open(CACHE);
   // Keep navigation and the stable installation manifest fresh while online.
   const url=new URL(req.url);
-  if(req.mode==='navigate'||url.pathname.endsWith('/manifest.webmanifest')){
-   const fallback=req.mode==='navigate'?'./index.html':'./manifest.webmanifest';
+  if(req.mode==='navigate'||url.pathname.endsWith('/manifest.webmanifest')||url.pathname.endsWith('/daily-curses.json')){
+   const fallback=req.mode==='navigate'?'./index.html':url.pathname.endsWith('/daily-curses.json')?'./daily-curses.json':'./manifest.webmanifest';
    try {
-    const response=await fetch(req);
+    const response=await fetch(req,{cache:'no-store'});
     if(response.ok)event.waitUntil(cache.put(fallback,response.clone()));
     return response;
    } catch(error) {

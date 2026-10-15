@@ -1,14 +1,19 @@
-/* MANLY CURSES GENERATOR v4.3.2 · FAVORITES & WORLD RANKING
+/* MANLY CURSES GENERATOR v4.4.0 · FAVORITES & WORLD RANKING
    2,000 original curses • Zero tracking • Offline-first PWA • Accessible play.
    Every interactive control is functional. No external JavaScript dependencies.
 */
-(() => {
+(async () => {
   'use strict';
+  if(window.MANLY_DAILY_READY)await window.MANLY_DAILY_READY;
   const $ = id => document.getElementById(id);
-  const curses = Array.isArray(window.MANLY_CURSES) ? window.MANLY_CURSES : [];
-  const categories = Array.isArray(window.MANLY_CATEGORIES) ? window.MANLY_CATEGORIES : [];
+  const baseCurses = Array.isArray(window.MANLY_CURSES) ? window.MANLY_CURSES : [];
+  const torontoToday=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/Toronto',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  const dailyReleases=Array.isArray(window.MANLY_DAILY_RELEASES)?window.MANLY_DAILY_RELEASES.filter((row,i)=>row.id===2001+i&&row.date<=torontoToday()):[];
+  const curses=baseCurses.concat(dailyReleases);
+  const categories=[...new Set([...(window.MANLY_CATEGORIES||[]),...dailyReleases.map(row=>row.category)])];
+  window.MANLY_CURSES=curses;window.MANLY_CATEGORIES=categories;
   const settings = window.MANLY_CONFIG || {};
-  const duelApiURL = endpoint => settings.duelApiOrigin ? new URL('/api/'+endpoint,settings.duelApiOrigin).href : './api/'+endpoint;
+  const duelApiURL = endpoint => {const url=new URL(settings.duelApiOrigin?'/api/'+endpoint:'./api/'+endpoint,settings.duelApiOrigin||location.href);if(endpoint==='duel-rankings')url.searchParams.set('catalog',String(curses.length));return url.href;};
   const byCategory = new Map([['all', curses]]);
   for (const name of categories) byCategory.set(name, curses.filter(c => c.category === name));
   const storeKey = 'manly-curses-v3'; // Keep the same storage key to preserve existing progress.
@@ -28,7 +33,7 @@
     favorites: uniqueValid(stored.favorites),
     unlocked: uniqueValid(stored.unlocked),
     history: uniqueValid(stored.history).slice(0, 60),
-    seen: uniqueValid(stored.seen).slice(0, 2000),
+    seen: uniqueValid(stored.seen).slice(0, curses.length),
     count: Number.isFinite(+stored.count) ? Math.max(0, Math.floor(+stored.count)) : 0,
     streak: Number.isFinite(+stored.streak) ? Math.max(0, Math.floor(+stored.streak)) : 0,
     lastCastDate: typeof stored.lastCastDate === 'string' ? stored.lastCastDate : '',
@@ -73,13 +78,15 @@
   let pendingDuelVotes=Array.isArray(readLocal(duelOutboxKey).votes)?readLocal(duelOutboxKey).votes.filter(validVote):[];
   let worldRankings=[], rankingPage=1, rankingLoadedAt='', rankingLive=false, rankingLoading=false, syncingVotes=false, rankingRequest=0, duelVoteId=null;
   function acceptRankings(data) {
-    if(!Array.isArray(data?.rankings) || data.rankings.length!==curses.length)return false;
+    if(!Array.isArray(data?.rankings) || data.rankings.length<2000 || data.rankings.length>12000)return false;
     const ids=new Set();
     for(const row of data.rankings){
-      if(!cleanId(row.id)||ids.has(row.id)||!Number.isSafeInteger(row.wins)||row.wins<0||!Number.isSafeInteger(row.duels)||row.duels<row.wins)return false;
+      if(!Number.isInteger(row.id)||row.id<1||row.id>12000||ids.has(row.id)||!Number.isSafeInteger(row.wins)||row.wins<0||!Number.isSafeInteger(row.duels)||row.duels<row.wins)return false;
       ids.add(row.id);
     }
-    worldRankings=data.rankings.map(row=>({id:row.id,wins:row.wins,duels:row.duels}));
+    worldRankings=data.rankings.filter(row=>cleanId(row.id)).map(row=>({id:row.id,wins:row.wins,duels:row.duels}));
+    for(const curse of curses)if(!ids.has(curse.id))worldRankings.push({id:curse.id,wins:0,duels:0});
+    worldRankings.sort((a,b)=>b.wins-a.wins||a.id-b.id);
     rankingLoadedAt=typeof data.updatedAt==='string'?data.updatedAt:'';
     return true;
   }
@@ -235,7 +242,7 @@
     {id:'vault',icon:'✦',title:'THE EXPLORER',hint:'Discover 50 unique curses',test:()=>state.seen.length>=50},
     {id:'deepvault',icon:'🗝️',title:'VAULT DIVING',hint:'Discover 200 unique curses',test:()=>state.seen.length>=200},
     {id:'fivehundredunique',icon:'📚',title:'THE ARCHIVIST',hint:'Discover 500 unique curses',test:()=>state.seen.length>=500},
-    {id:'all2000',icon:'🌌',title:'ALL THE NONSENSE',hint:'Discover all 2,000 curses',test:()=>state.seen.length>=2000},
+    {id:'all2000',icon:'🌌',title:'ALL THE NONSENSE',hint:'Discover the original 2,000 curses',test:()=>state.seen.filter(id=>id<=2000).length>=2000},
     {id:'firstheart',icon:'💙',title:'SENTIMENTAL SOUL',hint:'Save your first favorite',test:()=>state.favorites.length>=1},
     {id:'hearts',icon:'♥',title:'CURSE COLLECTOR',hint:'Save 10 favorites',test:()=>state.favorites.length>=10},
     {id:'heartthirty',icon:'💎',title:'PETTY HOARDER',hint:'Save 30 favorites',test:()=>state.favorites.length>=30},
@@ -251,7 +258,7 @@
     {id:'streak30',icon:'👑',title:'MONTHLY MENACE',hint:'Build a 30-day casting streak',test:()=>activeStreak()>=30},
     {id:'fivecats',icon:'🗺️',title:'CATEGORY TOURIST',hint:'Explore 5 categories',test:()=>categoryCount()>=5},
     {id:'twentycats',icon:'🌍',title:'CATEGORY NOMAD',hint:'Explore 20 categories',test:()=>categoryCount()>=20},
-    {id:'allcats',icon:'🎓',title:'MASTER OF ALL THINGS',hint:'Explore all 40 categories',test:()=>categoryCount()>=40},
+    {id:'allcats',icon:'🎓',title:'MASTER OF ALL THINGS',hint:'Explore 40 categories',test:()=>categoryCount()>=40},
     ...Array.from({length:11},(_,i)=>({id:'manly-month-'+(i+1),icon:i>=9?'👑':'💪',title:manlinessNames[i+1],hint:`Reach month ${i+1} of your Manliness journey`,test:()=>manlinessMonths()>=i+1})),
     ...[1,2,3,4,5,6].map(y=>({id:'manly-year-'+y,icon:y===6?'💎':'👑',title:y===6?'DIAMOND FINAL BOSS':manlinessTitle(y*12),hint:`Reach year ${y} to unlock ${manlinessTier(y*12).name}`,test:()=>manlinessMonths()>=y*12})),
     ...[1,2,3,4,5].flatMap(y=>[3,6,9].map(q=>({id:`rank-shard-${y}-${q}`,icon:q===9?'🌟':'✦',title:`${manlinessTier((y+1)*12).name} · ${q} SHARD MILESTONE`,hint:`Unlock after earning ${q} of 12 monthly shards toward ${manlinessTier((y+1)*12).name}`,test:()=>manlinessMonths()>=y*12+q}))),
@@ -862,6 +869,7 @@
     }catch(err){console.error(err);toast('SORRY, IMAGE EXPORT IS UNAVAILABLE HERE.');}
   }
   function dailyId() {
+    if(dailyReleases.length)return dailyReleases[dailyReleases.length-1].id;
     const key=dateKey(new Date());let hash=2166136261;
     for(const ch of key){hash^=ch.charCodeAt(0);hash=Math.imul(hash,16777619);}
     return (hash>>>0)%curses.length+1;
@@ -921,7 +929,7 @@
     const unique=state.seen.length;
     $('discoveryCount').textContent=unique.toLocaleString('en');
     $('discoveryBar').setAttribute('aria-valuenow',String(unique));
-    $('discoveryFill').style.width=Math.min(100,unique/2000*100)+'%';
+    $('discoveryFill').style.width=Math.min(100,unique/curses.length*100)+'%';
     const newly=badges.filter(b=>b.test()&&!state.earnedBadges.includes(b.id));
     if(newly.length){
       for(const b of newly)state.earnedBadges.push(b.id);
@@ -1169,12 +1177,12 @@
   }
   async function restoreSave(file) {
     if(!file)return;
-    if(file.size>120000){toast('SAVE FILE IS TOO LARGE.');return;}
+    if(file.size>2000000){toast('SAVE FILE IS TOO LARGE.');return;}
     try{
       const raw=JSON.parse(await file.text());
       if(!raw || raw.version!==3 || !raw.progress || typeof raw.progress!=='object' || Array.isArray(raw.progress))throw Error('Invalid save format');
       const obj=raw.progress;
-      const safe={favorites:uniqueValid(obj.favorites),history:uniqueValid(obj.history).slice(0,60),seen:uniqueValid(obj.seen).slice(0,2000),count:Math.min(1e7,Math.max(0,Math.floor(Number(obj.count)||0))),streak:Math.min(1e5,Math.max(0,Math.floor(Number(obj.streak)||0))),lastCastDate:/^\d{4}-\d{2}-\d{2}$/.test(obj.lastCastDate)?obj.lastCastDate:'',sound:typeof obj.masterSound === 'boolean' ? obj.masterSound : obj.musicEnabled!==false,musicEnabled:typeof obj.masterSound === 'boolean' ? obj.masterSound : obj.musicEnabled!==false,masterSound:typeof obj.masterSound === 'boolean' ? obj.masterSound : obj.musicEnabled!==false,reducedMotion:obj.reducedMotion===true,duelWins:Math.min(1e7,Math.max(0,Math.floor(Number(obj.duelWins)||0))),duelRound:Math.min(1e7,Math.max(0,Math.floor(Number(obj.duelRound)||0))),duelWinnerIds:uniqueValid(obj.duelWinnerIds),badgeNotified:Array.isArray(obj.badgeNotified)?obj.badgeNotified.filter(x=>badges.some(b=>b.id===x)):[],earnedBadges:Array.isArray(obj.earnedBadges)?obj.earnedBadges.filter(x=>badges.some(b=>b.id===x)):[],lastShareDate:typeof obj.lastShareDate==='string'?obj.lastShareDate:'',totalShares:Math.min(1e7,Math.max(0,Math.floor(Number(obj.totalShares)||0))),lastDailyCastDate:typeof obj.lastDailyCastDate==='string'?obj.lastDailyCastDate:'',firstCastDate:dateFromKey(obj.firstCastDate)?obj.firstCastDate:(dateFromKey(obj.lastCastDate)?obj.lastCastDate:''),activeMonthKeys:Array.isArray(obj.activeMonthKeys)?[...new Set(obj.activeMonthKeys.filter(x=>/^\d{4}-(0[1-9]|1[0-2])$/.test(x)))].slice(0,360):[]};
+      const safe={favorites:uniqueValid(obj.favorites),history:uniqueValid(obj.history).slice(0,60),seen:uniqueValid(obj.seen).slice(0,curses.length),count:Math.min(1e7,Math.max(0,Math.floor(Number(obj.count)||0))),streak:Math.min(1e5,Math.max(0,Math.floor(Number(obj.streak)||0))),lastCastDate:/^\d{4}-\d{2}-\d{2}$/.test(obj.lastCastDate)?obj.lastCastDate:'',sound:typeof obj.masterSound === 'boolean' ? obj.masterSound : obj.musicEnabled!==false,musicEnabled:typeof obj.masterSound === 'boolean' ? obj.masterSound : obj.musicEnabled!==false,masterSound:typeof obj.masterSound === 'boolean' ? obj.masterSound : obj.musicEnabled!==false,reducedMotion:obj.reducedMotion===true,duelWins:Math.min(1e7,Math.max(0,Math.floor(Number(obj.duelWins)||0))),duelRound:Math.min(1e7,Math.max(0,Math.floor(Number(obj.duelRound)||0))),duelWinnerIds:uniqueValid(obj.duelWinnerIds),badgeNotified:Array.isArray(obj.badgeNotified)?obj.badgeNotified.filter(x=>badges.some(b=>b.id===x)):[],earnedBadges:Array.isArray(obj.earnedBadges)?obj.earnedBadges.filter(x=>badges.some(b=>b.id===x)):[],lastShareDate:typeof obj.lastShareDate==='string'?obj.lastShareDate:'',totalShares:Math.min(1e7,Math.max(0,Math.floor(Number(obj.totalShares)||0))),lastDailyCastDate:typeof obj.lastDailyCastDate==='string'?obj.lastDailyCastDate:'',firstCastDate:dateFromKey(obj.firstCastDate)?obj.firstCastDate:(dateFromKey(obj.lastCastDate)?obj.lastCastDate:''),activeMonthKeys:Array.isArray(obj.activeMonthKeys)?[...new Set(obj.activeMonthKeys.filter(x=>/^\d{4}-(0[1-9]|1[0-2])$/.test(x)))].slice(0,360):[]};
       clearPassiveCastProgress(safe);
       safe.unlocked=uniqueValid([...uniqueValid(obj.unlocked),...safe.seen,...safe.favorites,...safe.duelWinnerIds]);
       try{localStorage.setItem(storeKey,JSON.stringify(safe));}catch{toast('STORAGE IS NOT AVAILABLE HERE.');return;}
@@ -1182,11 +1190,20 @@
     }catch{toast('THAT DOES NOT LOOK LIKE A MANLY CURSES SAVE FILE.');}
   }
   function init() {
-    if(curses.length!==2000 || categories.length!==40){
-      console.error('Invalid game data: expected 2,000 curses and 40 categories.',curses.length,categories.length);
+    if(baseCurses.length!==2000 || categories.length<40 || !curses.every((curse,i)=>curse.id===i+1)){
+      console.error('Invalid game data: the original collection or daily releases did not load.',curses.length,categories.length);
       $('curseText').textContent='The curse database did not load. Please refresh the page.';$('generateBtn').disabled=true;
       return;
     }
+    $('generateBtn').disabled=false;
+    $('machine').removeAttribute('aria-busy');
+    for(const el of document.querySelectorAll('[data-curse-total]'))el.textContent=curses.length.toLocaleString('en');
+    for(const el of document.querySelectorAll('[data-category-total]'))el.textContent=categories.length.toLocaleString('en');
+    $('discoveryBar').setAttribute('aria-valuemax',String(curses.length));
+    $('similarStatus').textContent='Start typing to check against '+curses.length.toLocaleString('en')+' existing curses.';
+    const latest=dailyReleases[dailyReleases.length-1];
+    $('dailyBtn').textContent=latest?'☀ '+(latest.date===torontoToday()?"TODAY'S NEW CURSE":'LATEST DAILY ORIGINAL'):'☀ CLASSIC OF THE DAY';
+    $('dailyDropStatus').textContent=latest?(latest.date===torontoToday()?'NEW TODAY':'LATEST ORIGINAL')+' · #'+padded(latest.id)+' · '+latest.date+' · Daily Originals':'Daily originals are unavailable here. Enjoy the classic collection.';
     for(const name of categories){
       const label=document.createElement('option');label.value=name;label.textContent=name;
       $('categorySelect').append(label);

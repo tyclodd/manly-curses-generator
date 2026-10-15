@@ -1,0 +1,20 @@
+# Publish one genuinely new daily curse
+
+The live game is https://tyclodd.github.io/manly-curses-generator/ in the public repository `tyclodd/manly-curses-generator`, branch `main`. `daily-curses.json` is the authoritative, append-only release feed. All players receive it through the game's shared catalog API; it also stays usable offline. The first 2,000 curses and their IDs must never change.
+
+## Editorial standard
+
+Write one harmless English comedy curse, normally 12–35 words, using the game's “May…” form. Invent a new comic mechanism, situation, and payoff. A synonym rewrite, changing the object or location, and another example of an already-used inconvenience are not new ideas. Do not copy from the web, submitted ideas, or another creator. Vary the comedy and rhythm rather than repeating the previous daily drop's template. Keep it suitable for the existing audience and avoid real harm, humiliation of an identifiable person, or protected-trait targets.
+
+Read all 2,000 base entries in `curses-data.js` and every release in `daily-curses.json`, including concept/review notes. The lexical check is only a rejection filter: explicitly compare the underlying situation and punchline with the entire collection, inspect its closest matches, and search the full catalog for the candidate's subject, mechanism, and synonyms. If a premise neighbor exists, discard the candidate, even if the numerical check passes. Generate a different premise, with at most three candidates per run. If none meets the standard, report the missed release instead of publishing recycled filler.
+
+## Safe publishing procedure
+
+1. Read current `main`, `daily-curses.json`, `curses-data.js`, and `qa/daily-release.mjs` using the connected GitHub app. Reuse the current repository and branch. No browser login or new credentials are needed. Do not use an old checkout or overwrite concurrent changes.
+2. Determine today's date in `America/Toronto`. If that date already has a release, stop successfully without publishing another. Never predate, backfill, or schedule future records. A retry must not create a second release.
+3. Materialize the three files and helper in a temporary local directory if needed; no external packages are required. Create candidate JSON with `date`, `text`, `concept`, and an `editorialReview` explaining the novelty of its premise/payoff against the collection and closest matches. Run `node qa/daily-release.mjs check candidate.json`. Read the actual nearest entries; do not equate the numerical result with a semantic review.
+4. After the editorial review, run `node qa/daily-release.mjs publish candidate.json`, then `node qa/daily-release.mjs verify`. This appends exactly one record at the next ID, starting at 2001. Every previous record, original curse, category, asset, and player identifier remains intact. Update only `daily-curses.json`; no frontend, schema, code, or backend deployment is needed for routine releases.
+5. Write that exact UTF-8 JSON with GitHub's guarded `update_file` using the fetched file SHA, or a new tree/commit plus `update_ref` with `expected_sha`. If another change wins the race, re-read once and re-check the date; never force-push or overwrite it. Commit message: `Publish Daily Original #<id> for <date>`.
+6. Read the committed file back and verify the new ID/date/text, one record for today, and the unchanged previous prefix. Wait for this commit's GitHub Pages workflow to succeed; inspect an actual failure once rather than repeatedly rerunning it. Report the new curse and live website URL, or the exact remaining failure. Do not claim publication before the workflow succeeds.
+
+The public daily API is https://manly-curses-generator.rainyrhino16.chatgpt.site/api/daily-curses. It refreshes the GitHub feed into a durable cache; a visitor's next page load receives the new release. Existing tabs can refresh. Shared Duel rankings accept released IDs; new text remains locked in rankings until that player discovers it. Favorites and earned progress use the existing storage keys.

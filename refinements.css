@@ -73,3 +73,5 @@
 @media(max-width:480px){.world-ranking{box-shadow:3px 5px 0 #0a4080;padding:14px 10px}.ranking-row{grid-template-columns:32px minmax(0,1fr) 35px;gap:8px}.ranking-heart{grid-column:2;justify-self:start;height:44px;margin-top:3px}.ranking-heading h3{font-size:29px}.ranking-refresh{padding:10px;font-size:10px}.ranking-intro{font-size:12px}.favorites-empty{padding:30px 18px}}
 
 @media(min-width:751px) and (max-width:960px){.main-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}.main-tabs .tab{min-height:44px;justify-content:center}}
+
+.daily-drop-status{margin:12px 0 0;padding:10px 12px;border:1px solid #91c3df;border-radius:10px;background:#eaf8ff;color:#174c70;font-size:11px;font-weight:850;line-height:1.5;letter-spacing:.04em;text-align:center}.machine[aria-busy="true"] .daily-drop-status{opacity:.7}

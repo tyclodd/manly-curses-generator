@@ -5,30 +5,31 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#071b3e">
   <meta name="color-scheme" content="light">
-  <meta name="description" content="2,000 harmless curses, one ridiculously manly arena. Challenge a friend in Curse Duel, collect badges, and unleash tiny inconveniences. Cast a tiny inconvenience on your friends, starring Tye Clodd.">
+  <meta name="description" content="2,000+ harmless curses and fresh Daily Originals, one ridiculously manly arena. Challenge a friend in Curse Duel, collect badges, and unleash tiny inconveniences. Cast a tiny inconvenience on your friends, starring Tye Clodd.">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Manly Curses Generator | Tye Clodd">
-  <meta property="og:description" content="2,000 tiny inconveniences. Zero actual magic. Your friends have been warned.">
+  <meta property="og:description" content="2,000+ tiny inconveniences. Fresh Daily Originals. Zero actual magic. Your friends have been warned.">
   <meta property="og:image" content="https://tyclodd.github.io/manly-curses-generator/assets/social-preview.jpg">
   <meta property="og:url" content="https://tyclodd.github.io/manly-curses-generator/">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://tyclodd.github.io/manly-curses-generator/">
-  <link rel="icon" type="image/x-icon" href="favicon.ico?v=4.3.2" sizes="16x16 32x32 48x48">
+  <link rel="icon" type="image/x-icon" href="favicon.ico?v=4.4.0" sizes="16x16 32x32 48x48">
   <link rel="icon" type="image/png" href="assets/favicon-official-32.png" sizes="32x32">
   <link rel="icon" type="image/png" href="assets/favicon-official-16.png" sizes="16x16">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon-official-180.png" sizes="180x180">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="style.css?v=4.3.2">
-  <link rel="stylesheet" href="v3-design.css?v=4.3.2">
-  <link rel="stylesheet" href="photo-trial.css?v=4.3.2">
-  <link rel="stylesheet" href="community.css?v=4.3.2">
-  <link rel="stylesheet" href="refinements.css?v=4.3.2">
+  <link rel="stylesheet" href="style.css?v=4.4.0">
+  <link rel="stylesheet" href="v3-design.css?v=4.4.0">
+  <link rel="stylesheet" href="photo-trial.css?v=4.4.0">
+  <link rel="stylesheet" href="community.css?v=4.4.0">
+  <link rel="stylesheet" href="refinements.css?v=4.4.0">
   <title>Manly Curses Generator | Diamond Journey Edition</title>
-  <script defer src="config.js?v=4.3.2"></script>
-  <script defer src="categories-data.js?v=4.3.2"></script>
-  <script defer src="curses-data.js?v=4.3.2"></script>
-  <script defer src="app.js?v=4.3.2"></script>
-  <script defer src="photo-trial.js?v=4.3.2"></script>
+  <script defer src="config.js?v=4.4.0"></script>
+  <script defer src="categories-data.js?v=4.4.0"></script>
+  <script defer src="curses-data.js?v=4.4.0"></script>
+  <script defer src="daily-curses-loader.js?v=4.4.0"></script>
+  <script defer src="app.js?v=4.4.0"></script>
+  <script defer src="photo-trial.js?v=4.4.0"></script>
 </head>
 <body>
   <a href="#main" class="skip-link">Skip to main content</a>
@@ -62,7 +63,7 @@
         <div class="hero-title reveal-1">
           <p class="eyebrow"><span aria-hidden="true">✦</span> THE CAPYBARA CURSE EDITION <span aria-hidden="true">✦</span></p>
           <h1 class="game-logo"><span class="logo-line-blue">MANLY</span> <span class="logo-line-yellow">CURSES</span><span class="logo-line-sub">GENERATOR <span aria-hidden="true">✦</span></span></h1>
-          <p class="hero-sub">Tiny inconveniences. <b>Serious capybara business.</b></p><div class="hero-pills"><span><b>2,000</b> CURSES</span><span><b>40</b> CATEGORIES</span><span><b>0</b> REAL HEXES</span></div><button type="button" id="manlinessJump" class="manliness-jump">🏅 CHECK YOUR MANLINESS LEVEL ↘</button>
+          <p class="hero-sub">Tiny inconveniences. <b>Serious capybara business.</b></p><div class="hero-pills"><span><b data-curse-total>2,000</b> CURSES</span><span><b data-category-total>40</b> CATEGORIES</span><span><b>0</b> REAL HEXES</span></div><button type="button" id="manlinessJump" class="manliness-jump">🏅 CHECK YOUR MANLINESS LEVEL ↘</button>
         </div>
 
         <div class="play-layout">
@@ -82,8 +83,8 @@
             <div class="arena-impact" id="arenaImpact" aria-hidden="true"><span>PETTY<br>CHAOS!</span></div>
           </section>
 
-          <section class="machine reveal-3" id="machine" aria-label="The curse machine">
-            <div class="machine-header"><span class="machine-kicker"><span class="kicker-icon">⚡</span> THE CURSE MACHINE</span><span class="inventory-tag">2,000 CURSES</span></div>
+          <section class="machine reveal-3" id="machine" aria-busy="true" aria-label="The curse machine">
+            <div class="machine-header"><span class="machine-kicker"><span class="kicker-icon">⚡</span> THE CURSE MACHINE</span><span class="inventory-tag"><span data-curse-total>2,000</span> CURSES</span></div>
             <p class="shared-curse-notice" id="sharedCurseNotice" hidden>YOU'VE BEEN VERY MILDLY CURSED. YOUR TURN.</p>
             <div class="selectors">
               <div class="input-container"><label for="friendName">FOR A FRIEND <small>(OPTIONAL)</small></label><div class="input-shell"><span aria-hidden="true">🎯</span><input id="friendName" type="text" autocomplete="off" maxlength="35" placeholder="Friend’s name, or leave it blank" spellcheck="false"></div></div>
@@ -103,14 +104,15 @@
               <div class="curse-footer"><span id="curseNum">CURSE #0002</span><span id="curseCategory">THE FOUNDING FIFTY</span></div>
               <div class="stamp" id="curseStamp" aria-hidden="true">MANLY PICK!</div>
             </div>
-            <button class="cast-button" id="generateBtn" type="button"><span class="cast-bolt" aria-hidden="true">⚡</span><span id="generateLabel">CAST A CURSE!</span><span class="cast-arrow" aria-hidden="true">↗</span></button>
+            <button class="cast-button" id="generateBtn" disabled type="button"><span class="cast-bolt" aria-hidden="true">⚡</span><span id="generateLabel">CAST A CURSE!</span><span class="cast-arrow" aria-hidden="true">↗</span></button>
             <p class="under-button" id="machineStatus" role="status" aria-live="polite">WARNING: RESULTS MAY CAUSE EXTREME MINOR INCONVENIENCE.</p>
             <div class="card-actions"><button id="copyBtn" class="card-action" type="button"><span aria-hidden="true">▣</span> COPY</button><button id="shareBtn" class="card-action" type="button"><span aria-hidden="true">↗</span> SHARE</button><button id="imageBtn" class="card-action" type="button"><span aria-hidden="true">↓</span> SAVE CARD</button></div>
             <div class="small-utilities"><button id="dailyBtn" type="button"><span aria-hidden="true">☀</span> CURSE OF THE DAY</button><button id="randomFavBtn" type="button"><span aria-hidden="true">♡</span> RANDOM FAVORITE</button></div>
+            <p class="daily-drop-status" id="dailyDropStatus" aria-live="polite">CHECKING TODAY’S DAILY ORIGINAL…</p>
           </section>
         </div>
         <section class="progress-den" aria-label="Your curse journey">
-          <div class="progress-header"><div><p class="section-eyebrow">YOUR VERY UNNECESSARY PROGRESS</p><h2>BUILD YOUR <em>MANLINESS.</em></h2></div><div class="discover-count"><strong id="discoveryCount">0</strong><span>OF 2,000 FOUND</span></div></div>
+          <div class="progress-header"><div><p class="section-eyebrow">YOUR VERY UNNECESSARY PROGRESS</p><h2>BUILD YOUR <em>MANLINESS.</em></h2></div><div class="discover-count"><strong id="discoveryCount">0</strong><span>OF <b data-curse-total>2,000</b> FOUND</span></div></div>
           <div class="progress-gauge" role="progressbar" aria-label="Unique curses discovered" aria-valuemin="0" aria-valuemax="2000" aria-valuenow="0" id="discoveryBar"><div id="discoveryFill"></div></div>
           <section id="manlinessZone" class="manliness-zone rank-rookie" aria-label="Your Manliness Level">
             <div class="manliness-stars" aria-hidden="true">✦ ⚡ ✦</div>
@@ -198,7 +200,7 @@
       </section>
 
       <section id="vaultView" class="view view-vault" aria-label="Curse Vault" hidden>
-        <div class="section-heading"><span class="section-eyebrow">YOUR PERSONAL PETTY ARCHIVE</span><h2>THE CURSE <em>VAULT.</em></h2><p>Browse all 2,000 curses. Save the ones that should never be forgotten.</p></div>
+        <div class="section-heading"><span class="section-eyebrow">YOUR PERSONAL PETTY ARCHIVE</span><h2>THE CURSE <em>VAULT.</em></h2><p>Browse all <span data-curse-total>2,000</span> curses. Save the ones that should never be forgotten.</p></div>
         <div class="vault-toolbar"><div class="vault-search"><span aria-hidden="true">⌕</span><label class="sr-only" for="vaultSearch">Search curses</label><input id="vaultSearch" type="search" placeholder="Search tiny inconveniences…" autocomplete="off"></div><label class="sr-only" for="vaultCategory">Filter vault category</label><select id="vaultCategory" class="vault-select"><option value="all">All 40 categories</option></select></div>
         <div class="vault-filters"><button type="button" data-filter="all" class="vault-filter active" aria-pressed="true">ALL CURSES</button><button type="button" data-filter="favorites" class="vault-filter" aria-pressed="false">♡ MY FAVORITES</button><button type="button" data-filter="seen" class="vault-filter" aria-pressed="false">⚡ CAST BEFORE</button><span id="vaultResults" class="vault-results"></span></div>
         <div class="vault-grid" id="vaultGrid"></div>
@@ -243,7 +245,7 @@
             <span class="side-kicker">CAN YOUR IDEA MAKE THE CUT?</span>
             <h3>THE PETTY RULES.</h3>
             <ol><li><b>Be harmless.</b> No threats, hateful jokes, or anything genuinely cruel.</li><li><b>Be ridiculously specific.</b> Tiny inconvenience is the whole point.</li><li><b>Keep it original.</b> Similar matches are shown before you send.</li><li><b>Tye has final say.</b> If approved, it can appear in a future update.</li></ol>
-            <p class="side-footer">Suggestions go to <strong>bookclodd@gmail.com</strong> via your email app. The current 2,000 curses stay unchanged until a reviewed game update is published.</p>
+            <p class="side-footer">Suggestions go to <strong>bookclodd@gmail.com</strong> via your email app. The original collection stays intact. Fresh Daily Originals join the game after an originality review.</p>
           </aside>
         </div>
       </section>

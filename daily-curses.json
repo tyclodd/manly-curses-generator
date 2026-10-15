@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "timezone": "America/Toronto",
+  "releases": [
+    {
+      "id": 2001,
+      "date": "2026-10-15",
+      "category": "Daily Originals",
+      "text": "May your shadow roll itself up like a carpet whenever you try to make a dramatic entrance.",
+      "concept": "A shadow behaves like a rolled-up carpet and sabotages a dramatic entrance.",
+      "review": {
+        "note": "The nearest carpet entry concerns suitcase noise, the entrance entries concern building layout, and the shadow entry concerns photocopy quality. None gives a shadow physical agency or the visual anticlimax of rolling itself away during an entrance. The mechanism and payoff are different, rather than a new object in an existing inconvenience.",
+        "closestIds": [
+          1240,
+          385,
+          1046,
+          1640,
+          176,
+          1893
+        ],
+        "maximumLexicalSimilarity": 0.2489
+      }
+    }
+  ]
+}
