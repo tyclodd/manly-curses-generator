@@ -796,6 +796,7 @@
   }
   function queueDuelVote(winnerId,loserId) {
     const vote={voteId:duelVoteId||crypto.randomUUID(),winnerId,loserId};
+    if(window.manlyAnalytics?.status?.().testTraffic===true)vote.testTraffic=true;
     if(!pendingDuelVotes.some(item=>item.voteId===vote.voteId))pendingDuelVotes.push(vote);
     if(!saveDuelOutbox())toast('VOTE KEPT FOR THIS SESSION. CONNECT TO SYNC IT.');
     renderWorldRanking();
