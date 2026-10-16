@@ -1,36 +1,90 @@
-/* Privacy-conscious analytics hooks. Events are sent only when an owner-configured endpoint exists. */
+/* Private, pseudonymous usage analytics. No names, targets, text, URLs or IPs. */
 (() => {
-  'use strict';
-  const endpoint = window.MANLY_CONFIG?.analyticsEndpoint;
-  if (!endpoint || !/^https:\/\//i.test(endpoint)) return;
-  const start = Date.now();
-  let lastActivity = start;
-  const allowed = new Set(['visit','engagement','curse_cast','favorite_added','favorite_removed','duel_vote','share','copy','save_card','view']);
-  function track(name, data = {}) {
-    if (!allowed.has(name)) return;
-    const payload = JSON.stringify({event:name, at:new Date().toISOString(), path:location.pathname, ...data});
-    try { navigator.sendBeacon?.(endpoint, new Blob([payload], {type:'text/plain'})) || fetch(endpoint,{method:'POST',mode:'no-cors',keepalive:true,body:payload}); } catch {}
+ 'use strict';
+ const endpoint=window.MANLY_CONFIG?.analyticsEndpoint;
+ if(!endpoint||!/^https:\/\//.test(endpoint)||!crypto.randomUUID)return;
+ const EVENTS=new Set(['visit','engagement','curse_cast','favorite_added','favorite_removed','duel_vote','share','copy','download','view','category_selected','install_prompt','app_installed','app_open']);
+ const FEATURES=new Set(['play','daily','duel','vault','favorites','support','suggest','achievements','install','settings']);
+ const categories=new Set([...(window.MANLY_CATEGORIES||[]),'Daily Originals']);
+ const test=new URLSearchParams(location.search).get('analytics_test')==='1';
+ const prefix='manly-analytics-'+(test?'qa-':'')+'v2-',OPT='manly-analytics-disabled';
+ const read=k=>{try{return JSON.parse(localStorage.getItem(k));}catch{return null;}};
+ const write=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}};
+ const remove=k=>{try{localStorage.removeItem(k);}catch{}};
+ const signal=()=>navigator.globalPrivacyControl===true||navigator.doNotTrack==='1';
+ let enabled=read(OPT)!==true&&!signal(),queue=read(prefix+'queue'),visitor=read(prefix+'visitor'),session=read(prefix+'session');
+ queue=Array.isArray(queue)?queue.filter(e=>Number.isSafeInteger(e.at)&&e.at>Date.now()-7*86400000).slice(-200):[];
+ let flushing=false,timer=null,lastActivity=Date.now(),lastTick=Date.now(),activeMs=0,lastHeartbeat=Date.now();
+ const device=/iPad|Tablet/i.test(navigator.userAgent)?'tablet':/Mobi|Android|iPhone/i.test(navigator.userAgent)?'mobile':'desktop';
+ function persist(){write(prefix+'queue',queue);}
+ function append(event,data,at=Date.now()){
+  const e={id:crypto.randomUUID(),visitorId:visitor.id,sessionId:session.id,event,at,device,returning:session.returning,test};
+  if(FEATURES.has(data.feature))e.feature=data.feature;
+  if(Number.isInteger(data.curseId)&&data.curseId>0&&data.curseId<=1000000)e.curseId=data.curseId;
+  if(categories.has(data.category))e.category=data.category;
+  if(['native','clipboard','file','prompt','manual'].includes(data.method))e.method=data.method;
+  if(event==='engagement')e.engagementMs=Math.min(30000,Math.max(0,Math.round(data.engagementMs||0)));
+  queue.push(e);queue=queue.slice(-200);persist();
+ }
+ function ensureSession(){
+  const now=Date.now();
+  if(!visitor?.id||now-visitor.createdAt>=90*86400000){visitor={id:crypto.randomUUID(),createdAt:now,hadSession:false};session=null;}
+  if(!session?.id||session.visitorId!==visitor.id||now-session.lastAt>=30*60000){
+   session={id:crypto.randomUUID(),visitorId:visitor.id,lastAt:now,returning:!!visitor.hadSession};
+   visitor.hadSession=true;write(prefix+'visitor',visitor);write(prefix+'session',session);append('visit',{});
   }
-  window.manlyAnalytics = {track};
-  track('visit');
-  const map = {generateBtn:'curse_cast',favoriteBtn:'favorite_added',voteA:'duel_vote',voteB:'duel_vote',shareBtn:'share',copyBtn:'copy',imageBtn:'save_card'};
-  document.addEventListener('click', e => {
-    const button = e.target.closest('button');
-    if (!button) return;
-    if (button.id === 'favoriteBtn') {
-      track(button.getAttribute('aria-pressed') === 'true' ? 'favorite_removed' : 'favorite_added');
-    } else if (map[button.id]) {
-      track(map[button.id], button.id === 'voteA' || button.id === 'voteB' ? {side:button.id === 'voteA'?'A':'B'} : {});
-    } else if (button.dataset.view) {
-      track('view',{feature:button.dataset.view});
-    }
-    lastActivity = Date.now();
-  }, true);
-  for (const event of ['pointerdown','keydown','scroll']) document.addEventListener(event,()=>{lastActivity=Date.now()},{passive:true});
-  function engagement() {
-    const seconds = Math.min(1800, Math.max(0, Math.round((Math.min(Date.now(),lastActivity+30000)-start)/1000)));
-    if (seconds>0) track('engagement',{seconds});
-  }
-  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')engagement()});
-  window.addEventListener('pagehide',engagement);
+  session.lastAt=now;write(prefix+'session',session);
+ }
+ function schedule(){if(timer===null)timer=setTimeout(()=>{timer=null;void flush();},2000);}
+ function track(event,data={}){
+  if(!enabled||signal()||!EVENTS.has(event)||event==='visit')return;
+  try{ensureSession();append(event,data);schedule();}catch{}
+ }
+ async function flush(){
+  if(!enabled||signal()||flushing||!queue.length||navigator.onLine===false)return;
+  flushing=true;
+  try{
+   // Each acknowledged event ID is removed once. Retries are deduplicated server-side.
+   for(let n=0;n<10&&queue.length&&enabled;n++){
+    const batch=queue.slice(0,20);
+    const response=await fetch(endpoint,{method:'POST',mode:'cors',credentials:'omit',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify({events:batch}),keepalive:true,cache:'no-store',signal:AbortSignal.timeout(10000)});
+    if(!response.ok)break;
+    const result=await response.json();if(!Array.isArray(result.accepted))break;
+    const accepted=new Set(result.accepted);queue=queue.filter(e=>!accepted.has(e.id));persist();
+    if(!batch.some(e=>accepted.has(e.id)))break;
+   }
+  }catch{}finally{flushing=false;}
+ }
+ function tick(){
+  const now=Date.now();
+  if(enabled&&document.visibilityState==='visible')activeMs+=Math.max(0,Math.min(now,lastActivity+30000)-lastTick);
+  lastTick=now;
+ }
+ function heartbeat(){
+  tick();
+  if(activeMs>=1000){const ms=Math.min(30000,activeMs);activeMs-=ms;track('engagement',{engagementMs:ms});}
+  lastHeartbeat=Date.now();
+ }
+ function updatePrivacy(){
+  const el=document.getElementById('analyticsToggle');if(!el)return;
+  el.textContent=signal()?'ANONYMOUS ANALYTICS OFF · PRIVACY SIGNAL':enabled?'TURN OFF ANONYMOUS ANALYTICS':'ALLOW ANONYMOUS ANALYTICS';
+  el.setAttribute('aria-pressed',String(enabled&&!signal()));el.disabled=signal();
+ }
+ function setEnabled(value){
+  enabled=!!value&&!signal();write(OPT,!value);
+  if(!enabled){queue=[];activeMs=0;visitor=null;session=null;for(const k of ['visitor','session','queue'])remove(prefix+k);}
+  else{lastActivity=lastTick=Date.now();ensureSession();schedule();}
+  updatePrivacy();
+ }
+ window.manlyAnalytics={track,flush,setEnabled,status:()=>({enabled:enabled&&!signal(),testTraffic:test,pending:queue.length})};
+ document.getElementById('analyticsToggle')?.addEventListener('click',()=>setEnabled(!enabled));
+ for(const ev of ['pointerdown','keydown','scroll'])document.addEventListener(ev,()=>{tick();lastActivity=Date.now();},{passive:true});
+ document.addEventListener('visibilitychange',()=>{heartbeat();if(document.visibilityState==='visible'){lastActivity=lastTick=Date.now();}void flush();});
+ window.addEventListener('pagehide',()=>{heartbeat();void flush();});
+ window.addEventListener('online',()=>void flush());
+ setInterval(()=>{tick();if(Date.now()-lastHeartbeat>=15000)heartbeat();},1000);
+ setInterval(()=>void flush(),15000);
+ if(enabled){try{ensureSession();if(matchMedia('(display-mode: standalone)').matches||navigator.standalone===true)track('app_open',{feature:'install'});schedule();}catch{}}
+ else{queue=[];for(const k of ['visitor','session','queue'])remove(prefix+k);}
+ updatePrivacy();
 })();

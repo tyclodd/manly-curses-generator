@@ -1,5 +1,6 @@
 /* Creator links intentionally shared for display on this public website. */
 window.MANLY_CONFIG = Object.freeze({
+  analyticsEndpoint: "https://manly-curses-generator.rainyrhino16.chatgpt.site/api/analytics-collect",
   duelApiOrigin: "https://manly-curses-generator.rainyrhino16.chatgpt.site",
   owner: 'Tye Clodd',
   instagram: 'https://www.instagram.com/tye_clodd/',

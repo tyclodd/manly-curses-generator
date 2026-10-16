@@ -1,5 +1,5 @@
 /* MANLY CURSES GENERATOR v4.4.0 · FAVORITES & WORLD RANKING
-   2,000 original curses • Zero tracking • Offline-first PWA • Accessible play.
+   2,000 original curses • Private anonymous analytics • Offline-first PWA • Accessible play.
    Every interactive control is functional. No external JavaScript dependencies.
 */
 (async () => {
@@ -596,7 +596,9 @@
     rouletteTimer=setInterval(()=>{$('roulettePreview').textContent=phrases[(++step)%phrases.length]},168);
   }
 
-  function cast(id = randomId(), {quick = false} = {}) {
+  const trackUsage=(event,data={})=>{try{window.manlyAnalytics?.track(event,{feature:state.view,...data});}catch{}};
+  const trackCurse=(event,id=state.currentId,data={})=>{const c=ref(id);if(c)trackUsage(event,{curseId:c.id,category:c.category,...data});};
+  function cast(id = randomId(), {quick = false, source = 'play'} = {}) {
     if (state.casting || !ref(id)) return;
     state.casting = true;
     const machine = $('machine'), btn = $('generateBtn');
@@ -615,6 +617,7 @@
       $('generateLabel').textContent = 'CAST ANOTHER CURSE!';
       $('machineStatus').textContent = 'CURSE DELIVERED. MAY THEY BE SLIGHTLY ANNOYED.';
       showCurse(id, {count:true,reveal:true,replaceURL:true});
+      trackCurse('curse_cast',id,{feature:source});
       if (!prefersLessMotion) {
         const arena = document.querySelector('.arena');
         arena.classList.remove('impact');void arena.offsetWidth;arena.classList.add('impact');
@@ -632,6 +635,7 @@
     const idx = state.favorites.indexOf(id);
     if (idx === -1) { state.favorites.unshift(id); toast('♥ ADDED TO YOUR PETTY COLLECTION!'); playSound('heart'); }
     else { state.favorites.splice(idx,1); toast('REMOVED FROM FAVORITES.'); }
+    trackCurse(idx===-1?'favorite_added':'favorite_removed',id);
     paintStats();paintDuelSaved();save();
     if (state.view === 'vault') renderVault();
     if (state.view === 'favorites') renderFavorites();
@@ -647,6 +651,7 @@
         history.pushState(null,'',url.pathname+url.search+url.hash);
       }catch{}
     }
+    if(state.view!==name||push===false)trackUsage('view',{feature:name});
     state.view = name;
     for (const view of ['play','duel','vault','favorites','support','suggest','achievements']) $(view+'View').hidden = view !== name;
     for (const tab of document.querySelectorAll('[data-view]')) {
@@ -669,6 +674,7 @@
   function selectCategory(name) {
     if (!byCategory.has(name)) name = 'all';
     $('categorySelect').value = name;
+    trackUsage('category_selected',{category:name==='all'?undefined:name});
     for (const btn of document.querySelectorAll('.mode-chip')) {
       const active = btn.dataset.category === name;
       btn.classList.toggle('selected',active); btn.setAttribute('aria-pressed',String(active));
@@ -809,14 +815,14 @@
     return gameURL({curse:state.currentId,to:safeTarget(),shared:1});
   }
   async function copy(text) {
-    try { if (navigator.clipboard?.writeText && window.isSecureContext) { await navigator.clipboard.writeText(text);return true; } } catch {}
+    try { if (navigator.clipboard?.writeText && window.isSecureContext) { await navigator.clipboard.writeText(text);trackCurse('copy',state.currentId,{method:'clipboard'});return true; } } catch {}
     const el=document.createElement('textarea');el.value=text;el.style.cssText='position:fixed;left:-9999px;top:0';document.body.append(el);el.focus();el.select();
-    let result = false;try{result=document.execCommand('copy')}catch{}el.remove();return result;
+    let result = false;try{result=document.execCommand('copy')}catch{}el.remove();if(result)trackCurse('copy',state.currentId,{method:'clipboard'});return result;
   }
   async function share() {
     const url = curseURL(), payload = {title:'Manly Curses Generator',text:message()};if(url)payload.url=url;
     if(navigator.share){try{await navigator.share(payload);registerShare();return;}catch(err){if(err?.name==='AbortError')return;}}
-    const copied=await copy([message(),url].filter(Boolean).join('\n\n'));if(copied)registerShare();toast(copied?'CURSE READY TO SHARE — COPIED!':'SORRY, SHARING IS NOT AVAILABLE.');
+    const copied=await copy([message(),url].filter(Boolean).join('\n\n'));if(copied)registerShare('clipboard');toast(copied?'CURSE READY TO SHARE — COPIED!':'SORRY, SHARING IS NOT AVAILABLE.');
   }
   function wrappedLines(ctx, text, maxWidth) {
     const tokens=text.split(/\s+/), lines=[];let line='';
@@ -865,6 +871,7 @@
       const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw new Error('Image conversion failed');
       const nameFile=`manly-curse-${padded(curse.id)}.png`,link=document.createElement('a'),uri=URL.createObjectURL(blob);
       link.href=uri;link.download=nameFile;document.body.append(link);link.click();link.remove();window.setTimeout(()=>URL.revokeObjectURL(uri),10000);
+      trackCurse('download',curse.id,{method:'file'});
       toast('YOUR CURSE CARD IS READY!');playSound('heart');
     }catch(err){console.error(err);toast('SORRY, IMAGE EXPORT IS UNAVAILABLE HERE.');}
   }
@@ -904,7 +911,7 @@
     if(window.matchMedia('(display-mode: standalone)').matches){toast('YOU ALREADY INSTALLED THE GAME!');return;}
     if(deferredPrompt){
       const prompt=deferredPrompt;deferredPrompt=null;
-      try{await prompt.prompt();await prompt.userChoice;return;}catch{}
+      try{trackUsage('install_prompt',{feature:'install',method:'prompt'});await prompt.prompt();await prompt.userChoice;return;}catch{}
     }
     if($('aboutDialog').hidden)modalOpen();else toast('USE YOUR BROWSER MENU TO INSTALL THE APP.');
   }
@@ -956,7 +963,8 @@
     $('badgeHint').textContent=firstLocked ? 'NEXT BADGE: '+firstLocked.hint+'. Share any unlocked badge above.' : 'EVERY BADGE COLLECTED. THAT IS COMICALLY IMPRESSIVE.';
     renderManliness();
   }
-  function registerShare(){
+  function registerShare(method='native'){
+    trackCurse('share',state.duelWinner||state.currentId,{method});
     state.totalShares+=1;state.lastShareDate=dateKey(new Date());
     renderJourney();save();
   }
@@ -1005,6 +1013,7 @@
   function downloadBlob(blob,filename){
     const href=URL.createObjectURL(blob),a=document.createElement('a');a.href=href;a.download=filename;
     document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(href),12000);
+    trackUsage('download',{method:'file'});
   }
   async function shareBadge(saveOnly=false){
     if(!activeBadge)return;
@@ -1026,7 +1035,7 @@
       }
       downloadBlob(blob,fileName);
       const copied=await copy([text,url].filter(Boolean).join('\n'));
-      if(copied)registerShare();
+      if(copied)registerShare('clipboard');
       toast('BADGE IMAGE SAVED'+(copied?' & CAPTION COPIED!':'!'));
     }catch(e){console.warn('Badge share:',e);toast('COULD NOT GENERATE BADGE IMAGE.');}
   }
@@ -1078,6 +1087,7 @@
     $('duelSaveWinner').disabled=false;$('duelShareWinner').disabled=false;
     particles($('duelCard'+side),65);playSound('duel');renderJourney();save();
     queueDuelVote(winner,state.duelPair.find(id=>id!==winner));
+    trackCurse('duel_vote',winner,{feature:'duel'});
     try{navigator.vibrate?.([32,35,80]);}catch{}
   }
   async function shareDuel() {
@@ -1085,7 +1095,7 @@
     const text=`🏆 CURSE DUEL WINNER!\n\n“${curse.text}”\n\nCurse #${padded(curse.id)} — Manly Curses Generator by Tye Clodd`;
     const url=gameURL({curse:curse.id,shared:1});
     if(navigator.share){try{await navigator.share({title:'Curse Duel Winner',text,url:url||undefined});registerShare();return;}catch(e){if(e?.name==='AbortError')return;}}
-    const copied=await copy(text+(url?'\n'+url:''));if(copied)registerShare();toast(copied?'WINNING CURSE COPIED — READY TO SHARE!':'SHARING IS UNAVAILABLE.');
+    const copied=await copy(text+(url?'\n'+url:''));if(copied)registerShare('clipboard');toast(copied?'WINNING CURSE COPIED — READY TO SHARE!':'SHARING IS UNAVAILABLE.');
   }
   async function shareDuelChallenge(){
     if(!state.duelPair.length)newDuel();
@@ -1094,7 +1104,7 @@
     const url=gameURL({view:'duel',duel:first+'-'+second});
     if(navigator.share){try{await navigator.share({title:'Pick your Curse Duel winner',text,url:url||undefined});registerShare();return;}catch(e){if(e?.name==='AbortError')return;}}
     const copied=await copy([text,url].filter(Boolean).join('\n\n'));
-    if(copied)registerShare();toast(copied?'DUEL CHALLENGE COPIED — SEND IT TO A FRIEND!':'SHARING IS UNAVAILABLE.');
+    if(copied)registerShare('clipboard');toast(copied?'DUEL CHALLENGE COPIED — SEND IT TO A FRIEND!':'SHARING IS UNAVAILABLE.');
   }
   const suggestionStopWords=new Set('may your you the a and to of in on at be is an it every always just for when as with into from get gets have has one each not that this will would even only never after before off all are'.split(' '));
   const tokenize=text=>new Set(text.toLowerCase().replace(/[^a-z0-9\s]/g,' ').split(/\s+/).filter(w=>!suggestionStopWords.has(w)).map(w=>w.replace(/(ing|ed|es|s)$/,'')).filter(w=>w.length>2&&!suggestionStopWords.has(w)));
@@ -1256,7 +1266,7 @@
     $('categorySelect').addEventListener('change',()=>selectCategory($('categorySelect').value));
     document.querySelectorAll('.mode-chip').forEach(el=>el.addEventListener('click',()=>selectCategory(el.dataset.category)));
     $('favoriteBtn').addEventListener('click',()=>favorite());
-    $('dailyBtn').addEventListener('click',()=>cast(dailyId()));
+    $('dailyBtn').addEventListener('click',()=>cast(dailyId(),{source:'daily'}));
     $('randomFavBtn').addEventListener('click',()=>state.favorites.length?cast(state.favorites[rand(state.favorites.length)]):toast('SAVE A FAVORITE CURSE FIRST!'));
     $('copyBtn').addEventListener('click',async()=>toast(await copy([message(),curseURL()].filter(Boolean).join('\n\n'))?'CURSE COPIED. SEND IT TO SOMEONE!':'COPY IS NOT AVAILABLE IN THIS BROWSER.'));
     $('shareBtn').addEventListener('click',share);
@@ -1308,7 +1318,7 @@
     });
     $('installTop').addEventListener('click',install);$('modalInstall').addEventListener('click',install);
     window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
-    window.addEventListener('appinstalled',()=>{deferredPrompt=null;toast('MANLY CURSES IS INSTALLED!');});
+    window.addEventListener('appinstalled',()=>{trackUsage('app_installed',{feature:'install'});deferredPrompt=null;toast('MANLY CURSES IS INSTALLED!');});
     window.addEventListener('popstate',()=>{
       const params=new URLSearchParams(location.search),pair=readDuelPair(params.get('duel'));
       $('friendName').value=cleanTarget(params.get('to'));
