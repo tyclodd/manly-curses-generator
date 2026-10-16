@@ -20,6 +20,24 @@
         ],
         "maximumLexicalSimilarity": 0.2489
       }
+    },
+    {
+      "id": 2002,
+      "date": "2026-10-16",
+      "category": "Daily Originals",
+      "text": "May every opinion you express require an interpretive dance demonstration before three garden gnomes, who award points only for the quality of your bow.",
+      "concept": "An opinion must be translated into dance for a miniature jury whose scoring system ignores both the opinion and its choreography, rewarding only the closing bow.",
+      "review": {
+        "note": "Read all 2,000 base entries and the complete prior Daily Original, including its concept and review. The first candidate was rejected as a premise neighbor of 1934 and discarded. This candidate turns an expressed opinion into mandatory choreography before a miniature jury, then reveals that only the closing bow earns points. Entry 1063 offers unhelpful product reviews, 1776 judges a vacuum by a remaining crumb, and 1610 requires a gesture for a sensor; none combines translation of an argument into performance with an irrelevant ceremonial scoring rule. Entry 1970 concerns unfamiliar dance rhythm, not judgement or argument. The nearest lexical entries were inspected individually, and full catalog searches covered opinions, dance, judging, points, demonstrations, ceremonies, feedback and courtesy. No matching premise or payoff was found. Release 2001's shadow transformation and entrance sabotage use a different mechanism. An independent full catalog semantic review accepted this candidate.",
+        "closestIds": [
+          1126,
+          328,
+          892,
+          1970,
+          1040
+        ],
+        "maximumLexicalSimilarity": 0.1967
+      }
     }
   ]
 }
