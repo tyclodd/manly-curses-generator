@@ -1,5 +1,5 @@
 /* Offline game assets, navigation fallback, and cached soundtrack seeking. */
-const RELEASE = '4.5.0';
+const RELEASE = '4.5.1';
 const CACHE = 'manly-curses-diamond-v'+RELEASE;
 const APP_FILES = [
  './', './index.html', './style.css', './v3-design.css', './app.js', './config.js', './analytics.js',
