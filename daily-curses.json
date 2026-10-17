@@ -38,6 +38,24 @@
         ],
         "maximumLexicalSimilarity": 0.1967
       }
+    },
+    {
+      "id": 2003,
+      "date": "2026-10-17",
+      "category": "Daily Originals",
+      "text": "May every chair you sit on publish a memoir titled The Day I Saved You From the Floor.",
+      "concept": "Ordinary sitting is retold by the chair as a heroic rescue from the floor, turning a piece of furniture's basic function into a self important autobiography.",
+      "review": {
+        "note": "Read all 2,000 original texts and both prior Daily Originals with their complete concepts and review notes. This candidate makes a chair cast its ordinary supporting function as a heroic rescue from the floor and publish the inflated account as a memoir. The title supplies the reversal. Lexical neighbours 13 and 966 concern wobbling or uneven chair legs; 1426 concerns an ineffective seat saving marker; 914 concerns a crumb in a chair wheel. None narrates a chair's basic service as an autobiographical rescue. Semantic comparison 1424 steals credit for another person's actual joke, while this chair claims heroism for its own unremarkable function; there is no borrowed accomplishment or silenced original performer. Entries 950, 1150, 1250 and 2000 turn ordinary inconveniences into anecdotes, without self authored heroic inflation. Release 2001 gives a shadow physical agency that sabotages an entrance; release 2002 makes an opinion pass an irrelevant dance judging ritual. Both mechanisms differ from this autonomous furniture memoir. Full catalogue searches covered chairs, seating, floors, support, memoirs, biographies, narration, rescue, heroism, credit, praise and gratitude. A separate independent review read the full corpus and accepted the candidate after inspecting the lexical neighbours and semantic comparisons.",
+        "closestIds": [
+          13,
+          966,
+          816,
+          1426,
+          1444
+        ],
+        "maximumLexicalSimilarity": 0.2432
+      }
     }
   ]
 }
