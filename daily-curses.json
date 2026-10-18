@@ -56,6 +56,24 @@
         ],
         "maximumLexicalSimilarity": 0.2432
       }
+    },
+    {
+      "id": 2004,
+      "date": "2026-10-18",
+      "category": "Daily Originals",
+      "text": "May every moment of silence you request be auctioned off by a tiny man who refuses to stop taking bids.",
+      "concept": "Requested silence becomes an auction lot, but the auctioneer destroys the very thing he is selling by continuing to solicit bids. The joke is a transaction that consumes its own product.",
+      "review": {
+        "note": "Read all 2,000 original entries and all three Daily Originals, including their concepts and review notes. This curse turns a requested absence of sound into a commodity whose auction destroys the commodity: the tiny auctioneer must keep speaking to solicit bids for silence. The absurd transaction and its self defeating product are the mechanism and payoff. Closest lexical entry 416 has a mosquito resume buzzing when eyes close; 1722 has an itch during a pause; 709, 919 and 960 make ordinary noise noticeable during quiet. Those are timing based interruptions without a market, a sale of an absence, or an activity consuming its own inventory. The louder advertisement in 760 and podcast opening ad in 1923 likewise sell something else during content rather than selling the silence their speech destroys. Lexical neighbours 658, 265, 1707 and 1894 concern software updates, a cup lid, yawning while drinking and replacing a note system. Full catalogue searches covered silence, quiet, auction, bids, sell, sold, requests, interruption, moments and noise, and the entire collection was read for premise equivalents. Prior release 2001 transforms a shadow to sabotage an entrance; 2002 replaces opinion with an irrelevant dance scoring ritual; 2003 inflates a chair's basic function into a heroic memoir. None uses an auction of an absence or the contradiction between conducting a sale and preserving its product. No matching premise or payoff was found.",
+        "closestIds": [
+          416,
+          658,
+          265,
+          1707,
+          1894
+        ],
+        "maximumLexicalSimilarity": 0.1689
+      }
     }
   ]
 }
