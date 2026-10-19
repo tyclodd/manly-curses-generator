@@ -74,6 +74,24 @@
         ],
         "maximumLexicalSimilarity": 0.1689
       }
+    },
+    {
+      "id": 2005,
+      "date": "2026-10-19",
+      "category": "Daily Originals",
+      "text": "May blowing out birthday candles turn your cake back into a shopping list.",
+      "concept": "The birthday ritual meant to crown a finished cake reverses it into the ingredient shopping list, demoting a celebratory reward into the chores that preceded it.",
+      "review": {
+        "note": "Refetched the full original catalogue from current main; its blob SHA is unchanged from the prior complete read of all 2,000 texts. Read every Daily Original and its concept/review notes, checked the complete catalogue for birthday, cake, candle, wish, blow, shopping list, ingredients, recipe, reversal, undo, reward and celebration, and inspected all fifteen lexical neighbours. An independent reviewer also read all 2,000 base entries and all four prior releases in full and accepted the premise and payoff. Entry 1991 has candles resist lighting while guests offer solutions, an ordinary delay rather than a cake reverting to preparation. Entry 1551 is the strongest semantic neighbour: a breath scatters a finished dust pile. This candidate instead makes the required celebratory ritual transform a finished reward into its abstract shopping instructions, not merely damage or scatter the cake. Entries 350, 946, 1570 and 1600 reveal additional work while keeping completed results; this curse removes the result and substitutes the document that precedes buying its ingredients. Entries 109 and 734 erase form progress through software failure, and 1050 reveals a forgotten shopping item. None has this ritual reversal or object to preparatory document transformation. Lexical neighbours 1690, 1015, 1269, 1443 and 1253 concern a shopping bag handle, a cart wheel, breeze and wrappers, birthday date recall and an umbrella. Their situations and punchlines differ. Prior Daily Originals concern a rolled shadow, an irrelevant dance jury, a chair's heroic memoir and an auction that consumes silence. The new curse uses no autonomous narrator, judging ritual or commodity contradiction. No matching premise or payoff was found.",
+        "closestIds": [
+          1690,
+          1015,
+          1269,
+          1443,
+          1253
+        ],
+        "maximumLexicalSimilarity": 0.2069
+      }
     }
   ]
 }
