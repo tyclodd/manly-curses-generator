@@ -92,6 +92,24 @@
         ],
         "maximumLexicalSimilarity": 0.2069
       }
+    },
+    {
+      "id": 2006,
+      "date": "2026-10-20",
+      "category": "Daily Originals",
+      "text": "May the alphabet go on strike until you submit your complaint in writing.",
+      "concept": "The alphabet withdraws its letters in a labour dispute, but ending the strike requires a written grievance made from the very medium being withheld. The complaint cannot be expressed under the condition imposed for restoring expression.",
+      "review": {
+        "note": "Refetched the full original catalogue from current main; blob SHA 16186c3959096ea588f1b69f918d9c7f9a246649 matches the prior complete read. An independent reviewer read all 2,000 current texts again in five untruncated batches, all five Daily Originals with concepts and review notes, all fifteen lexical neighbours and targeted semantic search groups. Parent inspected the actual strongest semantic neighbours and the complete keyword search results for writing, letters, strike, complaints, blocked help, access, passwords, verification and circular prerequisites. Entry 705 stores all passwords except the password manager's own unlocking clue, an inaccessible store rather than a remedy requiring the withheld medium. Entries 313 and 1504 physically obstruct drawers from inside. Entry 1940 contradicts an offline promise with an online advertisement; 994 leads from one definition to another; 900 reopens social media to announce a break. None makes reinstatement of a deliberately withdrawn expressive medium depend on a complaint expressed in that medium. Entries 22, 904, 1752 and 1853 concern writing tools failing at inconvenient times, not an alphabet bargaining through an impossible grievance rule. The closest lexical entry 1681 uses strike for a spoon hitting a bowl; 967, 983, 1177 and 1853 concern slide timing, correction fluid, a tire alert and a pen. Prior Daily Original 2002 demands possible but irrelevant dance judging; 2004 consumes the silence being auctioned rather than imposing a circular prerequisite for restoring missing language. Releases 2001, 2003 and 2005 concern a rolled shadow, a chair memoir and a birthday ritual reversing cake into a shopping list. No matching premise or payoff was found. Candidate one was accepted without needing alternates.",
+        "closestIds": [
+          1681,
+          967,
+          983,
+          1177,
+          1853
+        ],
+        "maximumLexicalSimilarity": 0.1829
+      }
     }
   ]
 }
