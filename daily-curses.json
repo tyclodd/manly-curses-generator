@@ -110,6 +110,24 @@
         ],
         "maximumLexicalSimilarity": 0.1829
       }
+    },
+    {
+      "id": 2007,
+      "date": "2026-10-21",
+      "category": "Daily Originals",
+      "text": "May your future self eat tomorrow's breakfast and send you back the dirty dishes.",
+      "concept": "A future version of you exploits time travel to keep the pleasure of tomorrow's meal while exporting its washing up into your present. The consequence arrives before its cause, and the only benefit of meeting your future self is receiving their chores.",
+      "review": {
+        "note": "Read publishing/DAILY-CURSES.md and qa/daily-release.mjs completely, all 2,000 original texts in five untruncated batches of 400, and all six prior Daily Originals with their complete concepts and review notes. Candidate one uses backward transfer of household obligations: your future self keeps tomorrow's breakfast and sends its dirty dishes into your present. It is not an early delivery, a late meal, or a chore simply generating another chore. Searched the entire collection for future, tomorrow, yesterday, past, time travel, back, early, before, consequences, borrowing, returns, breakfast, dishes, washing, chores, meals, leftovers, responsibility, delegation, sending and benefits, then inspected every returned entry and all fifteen actual lexical neighbours. The strongest semantic neighbour 1600 makes finishing chores reveal a task that starts tomorrow; it changes your awareness of a future obligation but brings neither a future person nor the result of a future event into the present. Entry 1898 sends a margin note forward unsuccessfully to a future reader, rather than sending a material burden backward while retaining its reward. Entries 350, 946 and 1570 add ordinary follow-up work; 1438 delegates others' temporary objects to your empty hand. None splits a meal's benefit and cleanup between different temporal versions of the same person or places cleanup before consumption. Lexical neighbour 111 postpones a delivery estimate; 335 makes a loaded dish suddenly necessary; 1582 dirties a cleaning cloth through its normal function; 1008 asks a checkout question too late; 241 makes a croissant shed crumbs. The remaining lexical neighbours concern tomorrow's chores, checkout accusations, drying-rack fit, a future margin-note reader, melting ice cream, a soft final grape, another table's dish, a weak takeaway fork, tomorrow's party anecdote and a torn cereal tab. Their mechanisms and payoffs differ. Prior release 2005 reverses a finished cake into its preparatory shopping document through a birthday ritual; no meal is consumed or chore sent by another temporal self. The new curse leaves the future meal intact and transfers only its aftermath through time. The rolled shadow, irrelevant dance jury, chair memoir, silence auction and alphabet strike in releases 2001 through 2004 and 2006 use neither temporal delegation nor this separation of benefit from burden. No matching premise or payoff was found, so the first candidate was accepted without alternate candidates. The lexical result is a rejection filter rather than the basis for this semantic acceptance.",
+        "closestIds": [
+          111,
+          335,
+          1582,
+          1008,
+          241
+        ],
+        "maximumLexicalSimilarity": 0.1646
+      }
     }
   ]
 }
