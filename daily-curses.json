@@ -146,6 +146,24 @@
         ],
         "maximumLexicalSimilarity": 0.1834
       }
+    },
+    {
+      "id": 2009,
+      "date": "2026-10-24",
+      "category": "Daily Originals",
+      "text": "May every coin you flip land on its edge and request more context before making a decision.",
+      "concept": "A coin toss rejects its binary job by landing impossibly on its edge and asking for nuance before it will choose.",
+      "review": {
+        "note": "Compared the candidate with all 2,000 base curses and all eight earlier Daily Originals. Full-catalog searches covered coin, toss, flip, heads, tails, edge, choice, decision, context, random, either, and binary. The closest lexical entry, #336, is a pancake that flips well and lands slightly off center; it has no choice mechanism or refusal to decide. Entry #1401 makes a story require unnoticed context, while #916 lets a printed margin make a decision. Coin entries #37, #526, #1029, #1169, #1536, #1684, and #1693 concern rejection, loss, pockets, meters, furniture, or rolling away. Choice entries #829, #976, #1392, and #1425 concern dialogue, tests, dates, or group preferences. None makes a binary randomizer defeat both outcomes through an impossible edge landing, then behave like a cautious moderator demanding nuance. Earlier Daily Originals use a rolled shadow, dance jury, chair memoir, silence auction, cake reversal, alphabet strike, time-travel chores, or public notarization, so neither the mechanism nor payoff is repeated.",
+        "closestIds": [
+          336,
+          1401,
+          916,
+          1169,
+          598
+        ],
+        "maximumLexicalSimilarity": 0.2887
+      }
     }
   ]
 }
