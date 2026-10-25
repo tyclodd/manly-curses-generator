@@ -164,6 +164,24 @@
         ],
         "maximumLexicalSimilarity": 0.2887
       }
+    },
+    {
+      "id": 2010,
+      "date": "2026-10-25",
+      "category": "Daily Originals",
+      "text": "May every fridge magnet quietly rearrange itself overnight into a performance review of your leftovers.",
+      "concept": "Fridge magnets secretly reorganize themselves into an unwanted workplace style evaluation of the food left in the refrigerator.",
+      "review": {
+        "note": "The full catalog contains ordinary refrigerator placement problems, a pillowcase moving overnight, ice arranging itself defensively, and one leftovers container problem. None gives decorative magnets authorship, turns their overnight arrangement into written workplace criticism, or makes leftovers the subject of an unsolicited performance review. The premise, mechanism, and payoff are therefore distinct from the nearest lexical entries rather than an object swap or synonym rewrite.",
+        "closestIds": [
+          174,
+          592,
+          290,
+          348,
+          1063
+        ],
+        "maximumLexicalSimilarity": 0.2526
+      }
     }
   ]
 }
