@@ -182,6 +182,24 @@
         ],
         "maximumLexicalSimilarity": 0.2526
       }
+    },
+    {
+      "id": 2011,
+      "date": "2026-10-26",
+      "category": "Daily Originals",
+      "text": "May every loose thread you pull submit a building permit, then add a tiny balcony to your sleeve.",
+      "concept": "Pulling a loose thread triggers a miniature construction project: the thread treats clothing as regulated real estate and builds an unnecessary balcony on the sleeve.",
+      "review": {
+        "note": "Compared the comic premise, mechanism and payoff with all 2,000 base curses and every prior Daily Original. The candidate turns a familiar clothing repair impulse into regulated miniature construction, ending with an architectural addition to the garment. Full catalog searches covered loose threads, pulling, sleeves, seams, fabric, clothes, permits, construction, buildings, balconies and additions. The nearest lexical and semantic entries were inspected individually. None makes a thread file paperwork, treats clothing as real estate or builds a new architectural feature on a sleeve, so this is not an object swap or synonym rewrite.",
+        "closestIds": [
+          1702,
+          565,
+          597,
+          1958,
+          1673
+        ],
+        "maximumLexicalSimilarity": 0.2668
+      }
     }
   ]
 }
