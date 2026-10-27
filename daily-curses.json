@@ -200,6 +200,24 @@
         ],
         "maximumLexicalSimilarity": 0.2668
       }
+    },
+    {
+      "id": 2012,
+      "date": "2026-10-27",
+      "category": "Daily Originals",
+      "text": "May every footprint you leave become a tiny 'YOU ARE HERE' sign that argues with the next one.",
+      "concept": "A trail of footprints becomes a succession of competing location markers. Each past position insists that it is the current here, so walking creates an argument between incompatible claims to the present location.",
+      "review": {
+        "note": "Read all 2,000 original texts and all eleven prior Daily Originals including their concepts and reviews. This candidate transforms a trace of movement into simultaneous competing declarations of present location. The final argument follows from every former position claiming to be here, rather than from an ordinary navigation delay or a misplaced sign. Entries 1028 and 1648 obscure an otherwise correct You Are Here marker with glare or a finger. They retain one stationary map and one truthful marker, whereas this premise creates multiple incompatible markers from the walker’s own footprints. Entries 1270 and 1291 reveal trail information too late, 1180 gives an incorrect GPS arrival and 1432 uses a nearby but imprecise text message. None materializes former positions as quarrelling current locations. The 2001 shadow changes shape to sabotage an entrance, with no conflict between location claims. The 2009 coin rejects a binary decision and asks for context, while this curse makes a moving trace assert mutually exclusive locations. The thread’s miniature building project in 2011 has a different trigger, process and architectural payoff. Full catalogue searches for footprints, tracks, trails, steps, signs, markers, here, maps, locations, arguments, positions and directions found no matching comic mechanism. The lexical neighbours were inspected individually; the score was used only as a rejection filter. The strongest lexical neighbour, 1841, is an imprecisely bounded place in a queue. It asks a person to interpret one sign, rather than turning a journey’s past positions into rival speaking markers. Neighbours 1147, 1801, 22, 1608, 1128, 1887, 1235, 1085, 760, 1021 and 646 concern sign distances, a halted queue, pen failure, sightlines, display timing, reading, junctions, tracking labels, loud advertising, a relocated product and towel lint. Their situations and payoffs do not duplicate this transformation.",
+        "closestIds": [
+          1841,
+          1147,
+          1801,
+          1028,
+          22
+        ],
+        "maximumLexicalSimilarity": 0.3101
+      }
     }
   ]
 }
