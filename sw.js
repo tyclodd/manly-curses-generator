@@ -1,8 +1,8 @@
 /* Offline game assets, navigation fallback, and cached soundtrack seeking. */
-const RELEASE = '4.5.2';
+const RELEASE = '4.6.0';
 const CACHE = 'manly-curses-diamond-v'+RELEASE;
 const APP_FILES = [
- './', './index.html', './style.css', './v3-design.css', './app.js', './config.js', './analytics.js',
+ './', './index.html', './style.css', './v3-design.css', './app.js', './config.js', './analytics.js', './engagement.js', './engagement.css',
  './curses-data.js', './categories-data.js', './daily-curses-loader.js', './daily-curses.json', './community.css', './refinements.css', './manifest.webmanifest',
  './assets/tye-mascot.webp', './favicon.ico', './assets/favicon-official-16.png', './assets/favicon-official-32.png', './assets/favicon-official-48.png',
  './assets/apple-touch-icon-official-180.png', './assets/icon-official-192.png', './assets/icon-official-512.png',

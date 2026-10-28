@@ -3,7 +3,11 @@
  'use strict';
  const endpoint=window.MANLY_CONFIG?.analyticsEndpoint;
  if(!endpoint||!/^https:\/\//.test(endpoint)||!crypto.randomUUID)return;
- const EVENTS=new Set(['visit','engagement','curse_cast','favorite_added','favorite_removed','duel_vote','share','copy','download','view','category_selected','install_prompt','app_installed','app_open']);
+ const EVENTS=new Set(['visit','engagement','curse_cast','favorite_added','favorite_removed','duel_vote','share','copy','download','view','category_selected','install_prompt','app_installed','app_open','prompt_shown','prompt_action','prompt_dismissed','duel_open','duel_vote_accepted','install_choice','collection_open']);
+ const PLACEMENTS=new Set(['daily_card','daily_share','same_category','favorite_action','after_two_casts','after_three_casts','share_after_four','install_offer','after_favorite','favorites_duel','daily_showdown','duel_intro','collection_share','collection_card','install_top','install_about','category_landing']);
+ const OUTCOMES=new Set(['clicked','cast','favorite','duel','share','download','category','accepted','dismissed','instructions']);
+ const CAMPAIGNS=new Set(['instagram_story','instagram_bio','duel_poll','youtube_short','daily_share','collection_share']);
+ const campaign=new URLSearchParams(location.search).get('campaign');
  const FEATURES=new Set(['play','daily','duel','vault','favorites','support','suggest','achievements','install','settings']);
  const categories=new Set([...(window.MANLY_CATEGORIES||[]),'Daily Originals']);
  const test=new URLSearchParams(location.search).get('analytics_test')==='1';
@@ -23,6 +27,9 @@
   if(Number.isInteger(data.curseId)&&data.curseId>0&&data.curseId<=1000000)e.curseId=data.curseId;
   if(categories.has(data.category))e.category=data.category;
   if(['native','clipboard','file','prompt','manual'].includes(data.method))e.method=data.method;
+  if(PLACEMENTS.has(data.placement))e.placement=data.placement;
+  if(OUTCOMES.has(data.outcome))e.outcome=data.outcome;
+  if(CAMPAIGNS.has(session.campaign))e.campaign=session.campaign;
   if(event==='engagement')e.engagementMs=Math.min(30000,Math.max(0,Math.round(data.engagementMs||0)));
   queue.push(e);queue=queue.slice(-200);persist();
  }
@@ -30,7 +37,7 @@
   const now=Date.now();
   if(!visitor?.id||now-visitor.createdAt>=90*86400000){visitor={id:crypto.randomUUID(),createdAt:now,hadSession:false};session=null;}
   if(!session?.id||session.visitorId!==visitor.id||now-session.lastAt>=30*60000){
-   session={id:crypto.randomUUID(),visitorId:visitor.id,lastAt:now,returning:!!visitor.hadSession};
+   session={id:crypto.randomUUID(),visitorId:visitor.id,lastAt:now,returning:!!visitor.hadSession,campaign:CAMPAIGNS.has(campaign)?campaign:null};
    visitor.hadSession=true;write(prefix+'visitor',visitor);write(prefix+'session',session);append('visit',{});
   }
   session.lastAt=now;write(prefix+'session',session);

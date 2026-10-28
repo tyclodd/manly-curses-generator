@@ -39,7 +39,7 @@ function boot(saved={}, options={}){
     closest(s){let n=this;while(n){if(matches(n,s))return n;n=n.parentElement;}return null;}
     focus(){document.activeElement=this;}select(){}scrollIntoView(){}getBoundingClientRect(){return {left:0,top:0,width:500,height:350};}
     reportValidity(){return this.querySelectorAll('[required]').every(n=>n.attrs.type==='checkbox'?n.checked:!!n.value);}
-    async click(){if(this.disabled)return;if(this.tagName==='A'&&this.download)env.downloads.push({name:this.download,blob:blobUrls.get(this.href)});await this.emit('click');}
+    async click(){if(this.disabled)return;if(this.tagName==='A'&&this.download)env.downloads.push({name:this.download,blob:blobUrls.get(this.href)});await this.emit('click');if(this.onclick)await this.onclick({target:this});}
     play(){env.playCalls++;if(env.mediaBlocked)return Promise.reject(new Error('Autoplay requires gesture'));this.paused=false;this.emit('playing');return Promise.resolve();}
     pause(){this.paused=true;this.emit('pause');}
     load(){this.paused=true;this.error=null;env.audioReloads=(env.audioReloads||0)+1;}
@@ -61,7 +61,7 @@ function boot(saved={}, options={}){
   class TestImage{set src(v){this._src=v;this.width=541;this.height=1150;queueMicrotask(()=>this.onload?.());}}
   const context=vm.createContext({window,document,navigator,location,localStorage:{getItem:k=>{if(env.storageBlocked)throw new Error('Storage disabled');return storage.get(k)??null;},setItem:(k,v)=>{if(env.storageBlocked)throw new Error('Storage disabled');storage.set(k,v);}},history:{replaceState:(_,title,url)=>{location.href=url;},pushState:(_,title,url)=>{env.navigation.push(location.href);location.href=url;}},Date:TestDate,URL:TestURL,URLSearchParams,AbortSignal,fetch:(url,options)=>env.fetch?env.fetch(url,options):Promise.reject(new Error('Offline test adapter')),File:options.fileSupported===false?undefined:File,Blob,Image:TestImage,crypto:webcrypto,console,setTimeout:window.setTimeout,clearTimeout:window.clearTimeout,setInterval:window.setInterval,clearInterval:window.clearInterval,requestAnimationFrame:fn=>{const id=++timerId;frames.set(id,fn);return id;},cancelAnimationFrame:id=>frames.delete(id),performance:{now:()=>env.frameClock||0},matchMedia:window.matchMedia,innerWidth:390,innerHeight:844,devicePixelRatio:1,queueMicrotask});
   env.usage=[];window.manlyAnalytics={track:(event,data)=>env.usage.push({event,...data})};
-  for(const filename of ['config.js','categories-data.js','curses-data.js','app.js','photo-trial.js']){
+  for(const filename of ['config.js','categories-data.js','curses-data.js','engagement.js','app.js','photo-trial.js']){
     let source=fs.readFileSync(dist+'/'+filename,'utf8');
     if(filename==='app.js'&&options.dailyReleases)window.MANLY_DAILY_RELEASES=options.dailyReleases;
     if(filename==='app.js')source=source.replace('  if(document.readyState===',`  window.__qa={acceptRankings,renderFavorites,renderWorldRanking,loadWorldRankings,syncDuelVotes,unlockCurses,isUnlocked,state,badges,randomId,showCurse,cast,favorite,switchView,selectCategory,renderVault,dailyId,newDuel,voteDuel,shareDuel,share,renderSimilarity,suggestionMessage,validateSuggestion,sendSuggestion,recordManlinessActivity,manlinessMonths,monthlyAnniversary,manlinessTitle,renderJourney,save,requestMusic,setMasterSound,install,installInstructions,backupSave,restoreSave,openBadge,shareBadge,saveCard};\n  if(document.readyState===`);
@@ -312,5 +312,23 @@ function boot(saved={}, options={}){
   assert(!JSON.stringify(env.usage).includes('Izzy Dubs'));
   console.log('PASS: successful casts, favorites and Duel actions emit private analytics without target names');
   console.log('PASS: daily originals expand totals and categories, daily casting unlocks the new curse, locked rankings stay private, favorites/progress survive reload, and stale drops are labelled honestly');
+
+  {
+  const journey=boot({},dailyOptions);await tick();
+  assert.equal(journey.$('dailyCard').hidden,false);assert.equal(journey.$('installTop').hidden,true);assert.equal(journey.api.state.count,0);
+  await journey.$('dailyCardCast').click();journey.flushTimers();assert.equal(journey.api.state.currentId,2001);assert.equal(journey.api.state.count,1);
+  journey.api.cast(2);journey.flushTimers();assert.equal(journey.$('nextStep').hidden,false);assert(journey.$('nextStepAction').textContent.includes('FAVORITE'));
+  await journey.$('nextStepAction').click();assert(journey.api.state.favorites.includes(2));assert.equal(journey.$('installTop').hidden,false);
+  journey.api.cast(3);journey.flushTimers();assert(journey.$('nextStepAction').textContent.includes('DUEL'));await journey.$('nextStepClose').click();assert.equal(journey.$('nextStep').hidden,true);
+  const before=journey.api.state.count;await journey.$('sameCategory').click();journey.flushTimers();assert.equal(journey.api.state.count,before+1);assert.equal(journey.window.MANLY_CURSES[journey.api.state.currentId-1].category,'The Founding Fifty');assert.notEqual(journey.api.state.currentId,3);
+  const pairA=[...journey.window.manlyEngagement.dailyPair()];const other=boot({},dailyOptions);await tick();assert.equal(pairA.join(','),[...other.window.manlyEngagement.dailyPair()].join(','));assert.notEqual(pairA[0],pairA[1]);
+  const castCount=journey.api.state.count;await journey.$('dailyShowdown').click();assert.equal(journey.api.state.view,'duel');assert.equal(journey.api.state.duelPair.join(','),pairA.join(','));assert.equal(journey.api.state.count,castCount);
+  journey.api.switchView('favorites');await journey.$('shareCollection').click();assert(journey.env.shared.at(-1).url.includes('collection=2'));assert(journey.env.shared.at(-1).url.includes('campaign=collection_share'));
+  await journey.$('saveCollection').click();await tick();assert(journey.env.downloads.some(x=>x.name==='my-petty-collection.png'));
+  const incoming=boot({}, {...dailyOptions,search:'?view=favorites&collection=2,202,999999'});await tick();assert.equal(incoming.api.state.favorites.length,0);assert.equal(incoming.api.state.count,0);assert.equal(incoming.$('sharedCollectionItems').children.length,2);assert.equal(incoming.$('sharedCollection').hidden,false);
+  const qaBallots=[];const qaGame=boot({'manly-curses-duel-outbox-v1':JSON.stringify({votes:[{voteId:'1bfe1bbb-ecac-4052-ab28-1247a0adee77',winnerId:2,loserId:202}]})},{search:'?analytics_test=1&view=duel&duel=2-202',fetch:async(url,o={})=>{if(o.method==='POST'){qaBallots.push(JSON.parse(o.body));return reply({accepted:true,voteId:JSON.parse(o.body).voteId});}return reply(worldData);}});await tick();assert.equal(qaBallots.length,0,'QA replayed a real pending ballot');await qaGame.$('voteA').click();await tick();assert.equal(qaBallots.length,1);assert.equal(qaBallots[0].testTraffic,true);assert.equal(JSON.parse(qaGame.storage.get('manly-curses-duel-outbox-v1')).votes.length,1);
+  assert(qaGame.env.usage.some(e=>e.event==='duel_vote_accepted'));assert(journey.env.usage.some(e=>e.event==='curse_cast'&&e.placement==='daily_card'));
+  console.log('PASS: Daily card, same-category continuation, contextual/dismissible prompts, qualified install offers, deterministic daily Duel, favorite collection link/image, opt-in collection saves, QA outbox isolation and server acknowledgement events');
+  }
 
 })().catch(error=>{console.error(error);process.exitCode=1;});

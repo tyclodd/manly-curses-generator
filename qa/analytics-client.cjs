@@ -1,6 +1,6 @@
 const assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),{webcrypto}=require('node:crypto');
 const source=fs.readFileSync(__dirname+'/../analytics.js','utf8');
-function boot({storage=new Map(),dnt=false,gpc=false,offline=false}={}){
+function boot({storage=new Map(),dnt=false,gpc=false,offline=false,search='?analytics_test=1&to=PRIVATE_NAME'}={}){
  let now=Date.now();const listeners={},docListeners={},intervals=[],timers=[],batches=[];
  const date=class extends Date{static now(){return now}};
  const button={addEventListener(){},setAttribute(){},disabled:false};
@@ -8,7 +8,7 @@ function boot({storage=new Map(),dnt=false,gpc=false,offline=false}={}){
  const navigator={userAgent:'Mobile Android',doNotTrack:dnt?'1':'0',globalPrivacyControl:gpc,onLine:!offline};
  const window={MANLY_CONFIG:{analyticsEndpoint:'https://example.com/api/analytics-collect'},MANLY_CATEGORIES:['The Founding Fifty'],addEventListener:(e,fn)=>listeners[e]=fn};
  const fetch=async(url,o)=>{const b=JSON.parse(o.body).events;batches.push(b);return Response.json({accepted:b.map(e=>e.id)})};
- const context={window,document,navigator,location:{search:'?analytics_test=1&to=PRIVATE_NAME'},localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)},crypto:webcrypto,Date:date,URLSearchParams,fetch,Response,AbortSignal,matchMedia:()=>({matches:false}),setTimeout:(fn)=>{timers.push(fn);return timers.length},setInterval:fn=>intervals.push(fn)};
+ const context={window,document,navigator,location:{search},localStorage:{getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,v),removeItem:k=>storage.delete(k)},crypto:webcrypto,Date:date,URLSearchParams,fetch,Response,AbortSignal,matchMedia:()=>({matches:false}),setTimeout:(fn)=>{timers.push(fn);return timers.length},setInterval:fn=>intervals.push(fn)};
  vm.runInNewContext(source,context);
  return{api:window.manlyAnalytics,storage,batches,navigator,document,listeners,docListeners,step(ms){now+=ms;intervals.forEach(fn=>fn())},runTimers(){timers.splice(0).forEach(fn=>fn())}};
 }
@@ -20,5 +20,7 @@ function boot({storage=new Map(),dnt=false,gpc=false,offline=false}={}){
  const off=boot({offline:true});off.api.track('curse_cast',{feature:'daily',category:'Daily Originals',curseId:2001});await off.api.flush();assert.equal(off.batches.length,0);assert(off.api.status().pending>=2);const reload=boot({storage:off.storage});await reload.api.flush();assert.equal(reload.batches.flat().filter(e=>e.event==='curse_cast').length,1,'Offline event lost');
  reload.api.setEnabled(false);reload.api.track('curse_cast',{curseId:2});await reload.api.flush();assert.equal(reload.api.status().pending,0);assert.equal(reload.storage.get('manly-analytics-disabled'),'true');
  for(const opt of [{dnt:true},{gpc:true}]){const x=boot(opt);x.api.track('curse_cast');await x.api.flush();assert.equal(x.batches.length,0);assert.equal(x.api.status().enabled,false)}
+ const campaign=boot({search:'?analytics_test=1&campaign=instagram_story&to=PRIVATE_NAME'});campaign.api.track('prompt_action',{feature:'daily',placement:'daily_card',outcome:'cast'});campaign.api.track('prompt_action',{placement:'PRIVATE_NAME',outcome:'PRIVATE_NAME'});await campaign.api.flush();assert(campaign.batches.flat().every(e=>e.campaign==='instagram_story'));assert(campaign.batches.flat().some(e=>e.placement==='daily_card'&&e.outcome==='cast'));assert(!JSON.stringify(campaign.batches).includes('PRIVATE_NAME'));
+ const unknown=boot({search:'?analytics_test=1&campaign=PRIVATE_NAME'});await unknown.api.flush();assert(unknown.batches.flat().every(e=>e.campaign===undefined));
  console.log('PASS: real client script, privacy signals and opt-out, metadata allowlist, 30-second idle cutoff, hidden-tab exclusion, new/returning sessions and persisted offline retries.');
 })().catch(e=>{console.error(e);process.exitCode=1});

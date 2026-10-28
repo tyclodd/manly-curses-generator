@@ -13,24 +13,26 @@
   <meta property="og:url" content="https://tyclodd.github.io/manly-curses-generator/">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://tyclodd.github.io/manly-curses-generator/">
-  <link rel="icon" type="image/x-icon" href="favicon.ico?v=4.5.2" sizes="16x16 32x32 48x48">
+  <link rel="icon" type="image/x-icon" href="favicon.ico?v=4.6.0" sizes="16x16 32x32 48x48">
   <link rel="icon" type="image/png" href="assets/favicon-official-32.png" sizes="32x32">
   <link rel="icon" type="image/png" href="assets/favicon-official-16.png" sizes="16x16">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon-official-180.png" sizes="180x180">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="stylesheet" href="style.css?v=4.5.2">
-  <link rel="stylesheet" href="v3-design.css?v=4.5.2">
-  <link rel="stylesheet" href="photo-trial.css?v=4.5.2">
-  <link rel="stylesheet" href="community.css?v=4.5.2">
-  <link rel="stylesheet" href="refinements.css?v=4.5.2">
+  <link rel="stylesheet" href="style.css?v=4.6.0">
+  <link rel="stylesheet" href="v3-design.css?v=4.6.0">
+  <link rel="stylesheet" href="photo-trial.css?v=4.6.0">
+  <link rel="stylesheet" href="community.css?v=4.6.0">
+  <link rel="stylesheet" href="refinements.css?v=4.6.0">
   <title>Manly Curses Generator | Diamond Journey Edition</title>
-  <script defer src="config.js?v=4.5.2"></script>
-  <script defer src="categories-data.js?v=4.5.2"></script>
-  <script defer src="curses-data.js?v=4.5.2"></script>
-  <script defer src="daily-curses-loader.js?v=4.5.2"></script>
-  <script defer src="analytics.js?v=4.5.2"></script>
-  <script defer src="app.js?v=4.5.2"></script>
-  <script defer src="photo-trial.js?v=4.5.2"></script>
+  <script defer src="config.js?v=4.6.0"></script>
+  <script defer src="categories-data.js?v=4.6.0"></script>
+  <script defer src="curses-data.js?v=4.6.0"></script>
+  <script defer src="daily-curses-loader.js?v=4.6.0"></script>
+  <script defer src="analytics.js?v=4.6.0"></script>
+  <script defer src="engagement.js?v=4.6.0"></script>
+  <link rel="stylesheet" href="engagement.css?v=4.6.0">
+  <script defer src="app.js?v=4.6.0"></script>
+  <script defer src="photo-trial.js?v=4.6.0"></script>
 </head>
 <body>
   <a href="#main" class="skip-link">Skip to main content</a>
@@ -44,7 +46,7 @@
       <div class="top-controls">
         <span class="offline-ready"><i aria-hidden="true"></i> <span id="offlineStatus" aria-live="polite">CURSE LAB ONLINE</span></span>
         <button class="header-icon" id="soundBtn" type="button" aria-pressed="true" aria-label="Mute music and sound effects" title="Mute all game audio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path class="icon-sound-on" d="M16 9c1.6 1.4 1.6 4.6 0 6m2-9c3.3 3.3 3.3 8.7 0 12"/><path class="icon-sound-off" d="M17 9l5 6m0-6-5 6"/></svg></button>
-        <button class="install-small" id="installTop" type="button"><span aria-hidden="true">↓</span> <span>INSTALL APP</span></button>
+        <button class="install-small" id="installTop" type="button" hidden><span aria-hidden="true">↓</span> <span>INSTALL APP</span></button>
         <button class="header-icon help-icon" id="openAbout" type="button" aria-label="How to play" title="How to play">?</button>
       </div>
     </header>
@@ -67,6 +69,7 @@
           <p class="hero-sub">Tiny inconveniences. <b>Serious capybara business.</b></p><div class="hero-pills"><span><b data-curse-total>2,000</b> CURSES</span><span><b data-category-total>40</b> CATEGORIES</span><span><b>0</b> REAL HEXES</span></div><button type="button" id="manlinessJump" class="manliness-jump">🏅 CHECK YOUR MANLINESS LEVEL ↘</button>
         </div>
 
+        <section class="eng-panel eng-daily" id="dailyCard" aria-label="Daily Original" hidden><div><h2 id="dailyCardTitle">TODAY'S DAILY ORIGINAL</h2><p id="dailyCardMeta"></p></div><div class="eng-actions"><button class="eng-button" type="button" id="dailyCardCast">⚡ CAST TODAY'S CURSE</button><button class="eng-button" type="button" id="dailyCardShare">↗ SHARE TODAY</button><button class="eng-button" type="button" id="dailyShowdown">🏆 DAILY SHOWDOWN</button></div></section>
         <div class="play-layout">
           <section class="arena reveal-2 photo-mode" aria-label="Your curse master, Tye Clodd">
             <canvas class="arena-canvas" id="arenaCanvas" aria-hidden="true"></canvas><div class="arena-dots" aria-hidden="true"></div>
@@ -107,7 +110,10 @@
             </div>
             <button class="cast-button" id="generateBtn" disabled type="button"><span class="cast-bolt" aria-hidden="true">⚡</span><span id="generateLabel">CAST A CURSE!</span><span class="cast-arrow" aria-hidden="true">↗</span></button>
             <p class="under-button" id="machineStatus" role="status" aria-live="polite">WARNING: RESULTS MAY CAUSE EXTREME MINOR INCONVENIENCE.</p>
+            <aside class="eng-panel eng-next" id="nextStep" aria-live="polite" hidden><div><h3 id="nextStepTitle"></h3></div><div class="eng-actions"><button type="button" class="eng-button" id="nextStepAction"></button></div><button type="button" class="eng-close" id="nextStepClose" aria-label="Dismiss suggestion">×</button></aside>
             <div class="card-actions"><button id="copyBtn" class="card-action" type="button"><span aria-hidden="true">▣</span> COPY</button><button id="shareBtn" class="card-action" type="button"><span aria-hidden="true">↗</span> SHARE</button><button id="imageBtn" class="card-action" type="button"><span aria-hidden="true">↓</span> SAVE CARD</button></div>
+            <div class="eng-actions"><button class="eng-button" id="sameCategory" type="button">⚡ ANOTHER IN THIS CATEGORY</button></div>
+            <div class="eng-category"><p>PICK YOUR EVERYDAY NEMESIS</p><div class="eng-actions"><button class="eng-button" type="button" data-eng-category="Driving &amp; Parking">DRIVING &amp; PARKING</button><button class="eng-button" type="button" data-eng-category="Streaming &amp; TV">STREAMING &amp; TV</button></div></div>
             <div class="small-utilities"><button id="dailyBtn" type="button"><span aria-hidden="true">☀</span> CURSE OF THE DAY</button><button id="randomFavBtn" type="button"><span aria-hidden="true">♡</span> RANDOM FAVORITE</button></div>
             <p class="daily-drop-status" id="dailyDropStatus" aria-live="polite">CHECKING TODAY’S DAILY ORIGINAL…</p>
           </section>
@@ -170,6 +176,8 @@
 
       <section id="favoritesView" class="view view-favorites" aria-label="Your favorite curses" hidden>
         <div class="section-heading"><span class="section-eyebrow">YOUR PERSONAL PETTY COLLECTION</span><h2>MY <em>FAVORITES.</em></h2><p>Every curse you have discovered and saved, all in one place.</p></div>
+        <section class="eng-panel"><div><h3>YOUR COLLECTION HAS A NEXT ADVENTURE.</h3><p id="collectionSummary"></p></div><div class="eng-actions"><button type="button" id="favoriteDuel" class="eng-button">🏆 FAVORITE VS RANDOM</button><button type="button" id="shareCollection" class="eng-button">↗ SHARE COLLECTION</button><button type="button" id="saveCollection" class="eng-button">↓ COLLECTION CARD</button></div></section>
+        <section class="eng-panel eng-shared" id="sharedCollection" hidden><h3>A FRIEND'S PETTY COLLECTION</h3><p>Viewing does not change your favorites. Save only the curses you want.</p><div id="sharedCollectionItems"></div></section>
         <div class="vault-toolbar"><div class="vault-search"><span aria-hidden="true">⌕</span><label class="sr-only" for="favoritesSearch">Search your favorites</label><input id="favoritesSearch" type="search" placeholder="Find a favorite curse…" autocomplete="off"></div><strong id="favoritesResults" class="vault-results" role="status"></strong></div>
         <div class="vault-grid" id="favoritesGrid"></div>
         <button class="load-more" type="button" id="favoritesMore" hidden>MORE FAVORITES ↓</button>
@@ -179,6 +187,7 @@
 
       <section id="duelView" class="view view-duel" aria-label="Curse Duel" hidden>
         <div class="section-heading duel-heading"><span class="section-eyebrow">THE WORLD'S PETTIEST SHOWDOWN</span><h2>CURSE <em>DUEL.</em></h2><p>Two tiny tragedies enter. Only one gets your vote. Choose the most delightfully annoying curse!</p></div>
+        <aside class="eng-panel" id="duelGuide"><div><h3>PICK THE CURSE THAT WOULD ANNOY YOU MORE.</h3><p>Choose one side, save your winner, or share the exact pair with a friend. Offline votes wait for a connection; worldwide rankings update after server confirmation.</p></div><button type="button" id="duelDailyShowdown" class="eng-button">🏆 TODAY'S SHARED SHOWDOWN</button></aside>
         <div class="duel-billboard"><span class="duel-billboard-light">●</span><span>LIVE FROM THE PETTY ARENA</span><b id="duelRoundTitle">ROUND 01</b><span class="duel-billboard-light">●</span></div>
         <div class="duel-scoreline" aria-label="Duel results"><div><span class="score-medal">🏆</span><strong id="duelWins">0</strong><small>ROUNDS JUDGED</small></div><span class="scoreline-vs">VS</span><div><span class="score-medal">✦</span><strong id="duelBest">0</strong><small>WINNERS SAVED</small></div></div>
         <div class="duel-arena" id="duelArena">

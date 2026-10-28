@@ -6,6 +6,7 @@
   'use strict';
   if(window.MANLY_DAILY_READY)await window.MANLY_DAILY_READY;
   const $ = id => document.getElementById(id);
+  const qaSession=new URLSearchParams(location.search).get('analytics_test')==='1';
   const baseCurses = Array.isArray(window.MANLY_CURSES) ? window.MANLY_CURSES : [];
   const torontoToday=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/Toronto',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
   const dailyReleases=Array.isArray(window.MANLY_DAILY_RELEASES)?window.MANLY_DAILY_RELEASES.filter((row,i)=>row.id===2001+i&&row.date<=torontoToday()):[];
@@ -16,9 +17,9 @@
   const duelApiURL = endpoint => {const url=new URL(settings.duelApiOrigin?'/api/'+endpoint:'./api/'+endpoint,settings.duelApiOrigin||location.href);if(endpoint==='duel-rankings')url.searchParams.set('catalog',String(curses.length));return url.href;};
   const byCategory = new Map([['all', curses]]);
   for (const name of categories) byCategory.set(name, curses.filter(c => c.category === name));
-  const storeKey = 'manly-curses-v3'; // Keep the same storage key to preserve existing progress.
-  const prevKey = 'manly-curses-v2';
-  const oldKey = 'manly-curses-v1';
+  const storeKey = qaSession?'manly-curses-qa-v3':'manly-curses-v3'; // Normal players keep the existing save key.
+  const prevKey = qaSession?'manly-curses-qa-v2':'manly-curses-v2';
+  const oldKey = qaSession?'manly-curses-qa-v1':'manly-curses-v1';
   const cleanId = id => Number.isInteger(Number(id)) && +id > 0 && +id <= curses.length ? +id : null;
   const padded = n => String(n).padStart(4, '0');
   const dateKey = d => [d.getFullYear(),String(d.getMonth() + 1).padStart(2, '0'),String(d.getDate()).padStart(2, '0')].join('-');
@@ -73,7 +74,8 @@
   function unlockCurses(ids) {
     for(const id of uniqueValid(ids))if(!state.unlocked.includes(id))state.unlocked.push(id);
   }
-  const rankingCacheKey='manly-curses-ranking-v1', duelOutboxKey='manly-curses-duel-outbox-v1';
+  const rankingCacheKey='manly-curses-ranking-v1', duelOutboxKey='manly-curses-duel-outbox-'+(qaSession?'qa-':'')+'v1';
+  let duelPlacement;
   const validVote = vote => vote && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(vote.voteId||'') && cleanId(vote.winnerId) && cleanId(vote.loserId) && vote.winnerId!==vote.loserId;
   let pendingDuelVotes=Array.isArray(readLocal(duelOutboxKey).votes)?readLocal(duelOutboxKey).votes.filter(validVote):[];
   let worldRankings=[], rankingPage=1, rankingLoadedAt='', rankingLive=false, rankingLoading=false, syncingVotes=false, rankingRequest=0, duelVoteId=null;
@@ -307,7 +309,7 @@
     const today = new Date(), yesterday = new Date(today); yesterday.setDate(yesterday.getDate() - 1);
     $('streakCount').textContent = state.lastCastDate === dateKey(today) || state.lastCastDate === dateKey(yesterday) ? String(state.streak) : '0';
     const active = state.favorites.includes(state.currentId);
-    $('favoriteBtn').textContent = active ? '♥' : '♡';
+    $('favoriteBtn').textContent = active ? '♥ SAVED FAVORITE' : '♡ SAVE FAVORITE';
     $('favoriteBtn').classList.toggle('active', active);
     $('favoriteBtn').setAttribute('aria-pressed', String(active));
     $('favoriteBtn').setAttribute('aria-label', active ? 'Remove this curse from favorites' : 'Save this curse to favorites');
@@ -598,7 +600,7 @@
 
   const trackUsage=(event,data={})=>{try{window.manlyAnalytics?.track(event,{feature:state.view,...data});}catch{}};
   const trackCurse=(event,id=state.currentId,data={})=>{const c=ref(id);if(c)trackUsage(event,{curseId:c.id,category:c.category,...data});};
-  function cast(id = randomId(), {quick = false, source = 'play'} = {}) {
+  function cast(id = randomId(), {quick = false, source = 'play', placement} = {}) {
     if (state.casting || !ref(id)) return;
     state.casting = true;
     const machine = $('machine'), btn = $('generateBtn');
@@ -617,7 +619,8 @@
       $('generateLabel').textContent = 'CAST ANOTHER CURSE!';
       $('machineStatus').textContent = 'CURSE DELIVERED. MAY THEY BE SLIGHTLY ANNOYED.';
       showCurse(id, {count:true,reveal:true,replaceURL:true});
-      trackCurse('curse_cast',id,{feature:source});
+      trackCurse('curse_cast',id,{feature:source,placement});
+      window.manlyEngagement?.onCast();
       if (!prefersLessMotion) {
         const arena = document.querySelector('.arena');
         arena.classList.remove('impact');void arena.offsetWidth;arena.classList.add('impact');
@@ -629,17 +632,18 @@
       if (state.view === 'vault') renderVault();
     }, delay);
   }
-  function favorite(id = state.currentId) {
+  function favorite(id = state.currentId, placement='favorite_action') {
     if (!ref(id)) return;
     unlockCurses([id]);
     const idx = state.favorites.indexOf(id);
     if (idx === -1) { state.favorites.unshift(id); toast('♥ ADDED TO YOUR PETTY COLLECTION!'); playSound('heart'); }
     else { state.favorites.splice(idx,1); toast('REMOVED FROM FAVORITES.'); }
-    trackCurse(idx===-1?'favorite_added':'favorite_removed',id);
+    trackCurse(idx===-1?'favorite_added':'favorite_removed',id,{placement});
     paintStats();paintDuelSaved();save();
     if (state.view === 'vault') renderVault();
     if (state.view === 'favorites') renderFavorites();
     if (state.view === 'duel') renderWorldRanking();
+    window.manlyEngagement?.onFavorite(idx===-1);
   }
   function switchView(name, {scroll = true, push = true} = {}) {
     if (!['play','duel','vault','favorites','support','suggest','achievements'].includes(name)) return;
@@ -652,6 +656,7 @@
       }catch{}
     }
     if(state.view!==name||push===false)trackUsage('view',{feature:name});
+    if(name==='duel'&&state.view!=='duel')trackUsage('duel_open',{feature:'duel',placement:duelPlacement});
     state.view = name;
     for (const view of ['play','duel','vault','favorites','support','suggest','achievements']) $(view+'View').hidden = view !== name;
     for (const tab of document.querySelectorAll('[data-view]')) {
@@ -669,6 +674,7 @@
     if (name === 'suggest') renderSimilarity();
     if (name === 'achievements')renderJourney();
     else $('allBadgeGrid').replaceChildren();
+    window.manlyEngagement?.onView(name);
     if (scroll) window.scrollTo({top:0,behavior:prefersLessMotion?'instant':'smooth'});
   }
   function selectCategory(name) {
@@ -789,14 +795,15 @@
         if(!response.ok)throw Error('Vote not synced');
         const result=await response.json();
         if(!result.accepted||result.voteId!==vote.voteId)throw Error('Vote not confirmed');
+        trackCurse('duel_vote_accepted',vote.winnerId,{feature:'duel',placement:vote.placement});
         pendingDuelVotes=pendingDuelVotes.filter(item=>item.voteId!==vote.voteId);saveDuelOutbox();changed=true;
       }
     }catch{rankingLive=false;}
     finally{syncingVotes=false;renderWorldRanking();if(changed&&state.view==='duel')loadWorldRankings();}
   }
   function queueDuelVote(winnerId,loserId) {
-    const vote={voteId:duelVoteId||crypto.randomUUID(),winnerId,loserId};
-    if(window.manlyAnalytics?.status?.().testTraffic===true)vote.testTraffic=true;
+    const vote={voteId:duelVoteId||crypto.randomUUID(),winnerId,loserId,placement:duelPlacement};
+    if(qaSession||window.manlyAnalytics?.status?.().testTraffic===true)vote.testTraffic=true;
     if(!pendingDuelVotes.some(item=>item.voteId===vote.voteId))pendingDuelVotes.push(vote);
     if(!saveDuelOutbox())toast('VOTE KEPT FOR THIS SESSION. CONNECT TO SYNC IT.');
     renderWorldRanking();
@@ -820,10 +827,11 @@
     const el=document.createElement('textarea');el.value=text;el.style.cssText='position:fixed;left:-9999px;top:0';document.body.append(el);el.focus();el.select();
     let result = false;try{result=document.execCommand('copy')}catch{}el.remove();if(result)trackCurse('copy',state.currentId,{method:'clipboard'});return result;
   }
-  async function share() {
+  async function share(placement) {
+    if(typeof placement!=='string')placement=undefined;
     const url = curseURL(), payload = {title:'Manly Curses Generator',text:message()};if(url)payload.url=url;
-    if(navigator.share){try{await navigator.share(payload);registerShare();return;}catch(err){if(err?.name==='AbortError')return;}}
-    const copied=await copy([message(),url].filter(Boolean).join('\n\n'));if(copied)registerShare('clipboard');toast(copied?'CURSE READY TO SHARE — COPIED!':'SORRY, SHARING IS NOT AVAILABLE.');
+    if(navigator.share){try{await navigator.share(payload);registerShare('native',{placement,curseId:state.currentId});return;}catch(err){if(err?.name==='AbortError')return;}}
+    const copied=await copy([message(),url].filter(Boolean).join('\n\n'));if(copied)registerShare('clipboard',{placement,curseId:state.currentId});toast(copied?'CURSE READY TO SHARE — COPIED!':'SORRY, SHARING IS NOT AVAILABLE.');
   }
   function wrappedLines(ctx, text, maxWidth) {
     const tokens=text.split(/\s+/), lines=[];let line='';
@@ -908,12 +916,13 @@
     if(/Android/.test(navigator.userAgent))return 'On Android, open the live website in Chrome, open the ⋮ menu, and choose Install app or Add to Home screen.';
     return 'When the site is hosted on HTTPS, use your browser’s Install App or Add to Home Screen option.';
   }
-  async function install() {
+  async function install(placement) {
     if(window.matchMedia('(display-mode: standalone)').matches){toast('YOU ALREADY INSTALLED THE GAME!');return;}
     if(deferredPrompt){
       const prompt=deferredPrompt;deferredPrompt=null;
-      try{trackUsage('install_prompt',{feature:'install',method:'prompt'});await prompt.prompt();await prompt.userChoice;return;}catch{}
+      try{trackUsage('install_prompt',{feature:'install',method:'prompt',placement});await prompt.prompt();const choice=await prompt.userChoice;trackUsage('install_choice',{feature:'install',method:'prompt',placement,outcome:choice.outcome==='accepted'?'accepted':'dismissed'});return;}catch{}
     }
+    trackUsage('install_choice',{feature:'install',method:'manual',placement,outcome:'instructions'});
     if($('aboutDialog').hidden)modalOpen();else toast('USE YOUR BROWSER MENU TO INSTALL THE APP.');
   }
   function achievementCard(badge) {
@@ -964,8 +973,8 @@
     $('badgeHint').textContent=firstLocked ? 'NEXT BADGE: '+firstLocked.hint+'. Share any unlocked badge above.' : 'EVERY BADGE COLLECTED. THAT IS COMICALLY IMPRESSIVE.';
     renderManliness();
   }
-  function registerShare(method='native'){
-    trackCurse('share',state.duelWinner||state.currentId,{method});
+  function registerShare(method='native',data={}){
+    trackCurse('share',data.curseId||state.duelWinner||state.currentId,{method,...data});
     state.totalShares+=1;state.lastShareDate=dateKey(new Date());
     renderJourney();save();
   }
@@ -1088,7 +1097,7 @@
     $('duelSaveWinner').disabled=false;$('duelShareWinner').disabled=false;
     particles($('duelCard'+side),65);playSound('duel');renderJourney();save();
     queueDuelVote(winner,state.duelPair.find(id=>id!==winner));
-    trackCurse('duel_vote',winner,{feature:'duel'});
+    trackCurse('duel_vote',winner,{feature:'duel',placement:duelPlacement});
     try{navigator.vibrate?.([32,35,80]);}catch{}
   }
   async function shareDuel() {
@@ -1230,6 +1239,7 @@
     const sharedPair=readDuelPair(initialParams.get('duel'));
     if(sharedPair)newDuel(sharedPair);
     switchView(initialParams.get('view')||(sharedPair?'duel':'play'),{scroll:false,push:false});
+    if(byCategory.has(initialParams.get('category')))selectCategory(initialParams.get('category'));
     if(initialParams.get('shared')==='1'&&cleanId(initialParams.get('curse'))){
       $('sharedCurseNotice').hidden=false;
       $('generateLabel').textContent='CAST ONE BACK!';
@@ -1317,7 +1327,7 @@
         else if(!e.shiftKey && document.activeElement===focused.at(-1)){e.preventDefault();focused[0].focus();}
       }
     });
-    $('installTop').addEventListener('click',install);$('modalInstall').addEventListener('click',install);
+    $('installTop').addEventListener('click',()=>install('install_top'));$('modalInstall').addEventListener('click',()=>install('install_about'));
     window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;});
     window.addEventListener('appinstalled',()=>{trackUsage('app_installed',{feature:'install'});deferredPrompt=null;toast('MANLY CURSES IS INSTALLED!');});
     window.addEventListener('popstate',()=>{
@@ -1328,6 +1338,18 @@
       switchView(params.get('view')||(pair?'duel':'play'),{push:false});
     });
     configureCreator();
+    window.manlyEngagement?.init({
+      snapshot:()=>({current:currentCurse(),latest:dailyReleases.at(-1)||null,catalog:curses,favorites:state.favorites.map(ref),totalCasts:state.count,view:state.view}),
+      cast:(id,source,placement)=>{switchView('play',{scroll:false});cast(id,{source,placement});},favorite,
+      openDuel:(pair,placement)=>{const alreadyDuel=state.view==='duel';duelPlacement=placement;newDuel(pair);switchView('duel');if(alreadyDuel)trackUsage('duel_open',{feature:'duel',placement});},
+      selectCategory:name=>{selectCategory(name);switchView('play',{scroll:false});$('generateBtn').focus();},
+      viewCurse:id=>{showCurse(id);switchView('play');},share,install,toast,url:gameURL,
+      shareText:async(title,text,params,placement,curseId)=>{
+        const url=gameURL(params);
+        if(navigator.share){try{await navigator.share({title,text,url});registerShare('native',{feature:placement==='collection_share'?'favorites':'daily',placement,curseId});return;}catch(e){if(e?.name==='AbortError')return;}}
+        if(await copy(text+'\n\n'+url)){registerShare('clipboard',{feature:placement==='collection_share'?'favorites':'daily',placement,curseId});toast('LINK COPIED. READY TO SHARE!');}
+      }
+    });
     if('serviceWorker' in navigator && window.isSecureContext){
       const prepareOffline=async()=>{
         $('offlineStatus').textContent='PREPARING OFFLINE';
