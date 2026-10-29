@@ -236,6 +236,24 @@
         ],
         "maximumLexicalSimilarity": 0.2306
       }
+    },
+    {
+      "id": 2014,
+      "date": "2026-10-29",
+      "category": "Daily Originals",
+      "text": "May saying \"and so on\" summon a miniature parade of every example you were hoping to skip.",
+      "concept": "A verbal shortcut intended to omit further examples instead materializes every omitted example as a miniature procession. The abbreviation expands into a physical spectacle of precisely the details it was meant to spare.",
+      "review": {
+        "note": "Read all 2,000 current base entries in five complete batches and all thirteen Daily Originals, including their concepts and review notes. This candidate makes the spoken abbreviation and so on physically enumerate the examples it was intended to omit: each excluded example enters a miniature parade. The cost is an unnecessary procession of omitted detail, not a delayed button, a misunderstood abbreviation or a request for approval. Full catalogue searches covered parades, processions, summoning, lists, examples, abbreviation, omission, skipping, speech, phrases, explanations and context. Entry 959 makes written abbreviations illegible after time passes, whereas this shortcut becomes too explicit through materialization. Entries 1401 and 1435 require background explanations in ordinary conversation; neither turns omitted examples into physical participants. Entry 1485 summons an animal’s expectation through a treat container sound, not the literal omitted content of a linguistic shortcut. Entry 763 delays a Skip Intro control, 841 accidentally skips dialogue, and 1823 skips queue numbers. All retain ordinary events and do not make abbreviation produce an exhaustive spectacle. Inspected all fifteen lexical neighbours: 30, 389, 1485, 763, 1299, 1636, 1996, 1919, 1823, 841, 909, 153, 267, 99 and 567. Their mechanisms and payoffs differ. Prior release 2013 alphabetizes an echo while preserving the already spoken words; this candidate leaves the spoken phrase intact and gives the unspoken examples a new physical existence. Release 2002 demands a dance and irrelevant scoring to validate an opinion; here there is no gatekeeper, judgment or required permission. Release 2004 destroys silence through an auction, and 2006 imposes a circular grievance condition on an alphabet strike. Neither literalizes a rhetorical omission into a parade of its absent content. No matching comic premise or payoff was found in the full corpus. Candidate one is accepted; the lexical result is only a rejection filter.",
+        "closestIds": [
+          30,
+          389,
+          1485,
+          763,
+          1299
+        ],
+        "maximumLexicalSimilarity": 0.1698
+      }
     }
   ]
 }
