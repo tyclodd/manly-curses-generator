@@ -254,6 +254,24 @@
         ],
         "maximumLexicalSimilarity": 0.1698
       }
+    },
+    {
+      "id": 2015,
+      "date": "2026-10-31",
+      "category": "Daily Originals",
+      "text": "May every doughnut hole you look through turn up in your pocket, leaving the doughnut whole and your loose change on the floor.",
+      "concept": "Looking through a doughnut transfers its empty centre into the viewer's pocket. The pastry becomes whole while the new pocket opening drops the viewer's loose change. A useful absence in one object becomes a structural defect in another.",
+      "review": {
+        "note": "Read all 2,000 current base entries and all fourteen Daily Originals with their concept and review notes. Candidate one transfers negative space: looking through a doughnut moves its hole into a pocket, filling the pastry and perforating the pocket so loose change falls out. The result trades an edible gain for a carrying failure by relocating an absence, rather than moving an ordinary item or adding a repair chore. Full catalogue searches covered doughnut, donut, hole, empty, absence, transfer, mending, pockets, coins, change, looking through, whole, void and their premise neighbours. Entry 235 has cream cheese leak through an existing bagel hole, while this curse relocates the opening itself and closes its former host. Entry 165 has an ordinary worn sock hole. Entry 1029 drops a coin deeper into an intact pocket; 585 and 1684 trap coins in pocket corners. None transfers a hole between unrelated objects. Entries 1255 and 1865 move a patch of shade or an ink impression through ordinary sunlight and contact, not a transferable void that changes two objects in opposite ways. Read all fifteen actual lexical neighbours: 193, 1029, 489, 239, 1783, 958, 1845, 1272, 1623, 1983, 812, 816, 689, 1631 and 556. Their searches, slipping objects, zippers, timing, glass view, game clipping, navigation and clothing fit do not duplicate this mechanism. Daily 2011 converts a pulled thread into a permitted building project, not a transfer of empty space; 2005 reverses a finished cake into its preparatory list, without conserving or relocating a physical absence. Daily 2007 transfers future washing up while preserving a meal, using a second temporal self; this candidate contains no temporal delegation. Daily 2001 rolls a shadow and 2012 changes footprints into rival location assertions. Daily 2013 reorders spoken words and 2014 materializes omitted examples, whereas this is a nonverbal exchange of a physical opening. No equivalent premise, mechanism or payoff was found. The numerical pass is only a rejection filter.",
+        "closestIds": [
+          193,
+          1029,
+          489,
+          239,
+          1783
+        ],
+        "maximumLexicalSimilarity": 0.178
+      }
     }
   ]
 }
