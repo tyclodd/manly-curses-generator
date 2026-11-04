@@ -272,6 +272,24 @@
         ],
         "maximumLexicalSimilarity": 0.178
       }
+    },
+    {
+      "id": 2016,
+      "date": "2026-11-04",
+      "category": "Daily Originals",
+      "text": "May every snow globe you shake rearrange your living room while its tiny house remains annoyingly immaculate.",
+      "concept": "A snow globe reverses the expected direction of disturbance: shaking its miniature world rearranges the owner's full sized living room instead, while the tiny house remains perfectly ordered. The souvenir preserves its own calm by exporting the shake to its operator's surroundings.",
+      "review": {
+        "note": "Refetched current main, the complete 2,000 entry base catalogue and all fifteen Daily Originals. The base blob 16186c3959096ea588f1b69f918d9c7f9a246649 is unchanged from the complete earlier read of every base text; the daily feed matches the full fifteen release read including concepts and review notes. Candidate one reverses the scale and target of a souvenir's disturbance: shaking the snow globe changes the full sized living room while its miniature house stays immaculate. It is not an ordinary moving object, spilled snow, or a miniature person demanding permission. Full catalogue searches covered snow, globe, miniature, model, toy, shaking, rearrangement, furniture, doll, replica, scale, tidiness, immaculate, upside down, houses and living rooms. Entry 1293 leaves footprints in actual snow; 1311 leaves powder unmixed in a shaker; 1481 moves a dog's rainwater into a dry area; 326 dispenses too much spice after an initially unproductive shake. None reverses a miniature model's relationship with its external surroundings. The furniture entries from 1501 through 1550 use ordinary cushions, screws, rugs, alignment and hidden objects, without any model controlling a real room. Inspected all fifteen lexical neighbours: 112, 164, 1293, 1311, 1481, 2010, 218, 1527, 1686, 1769, 960, 1863, 1736, 326 and 1006. The strongest matches 112 and 164 concern delays or itches after leaving a house, unrelated to this scale inversion. Daily 2010 rearranges magnets into an unsolicited written evaluation, with no miniature world or exported physical disturbance. Daily 2011 turns a thread into regulated construction; 2007 sends a future meal's washing up backward in time. Neither makes an operator's action upon a model affect only its full sized surroundings. Daily 2015 relocates a hole from pastry into a pocket, conserving an absence between objects; this candidate transfers neither a hole nor any miniature material, and its payoff is that the deliberately shaken scene alone remains orderly. Earlier autonomous shadows, memoirs, ritual reversals, judging ceremonies, sorted echoes and literalized omissions also have distinct mechanisms and endings. No matching premise or payoff was found. The lexical result is a rejection filter rather than the grounds for accepting originality.",
+        "closestIds": [
+          112,
+          164,
+          1293,
+          1311,
+          1481
+        ],
+        "maximumLexicalSimilarity": 0.1819
+      }
     }
   ]
 }
