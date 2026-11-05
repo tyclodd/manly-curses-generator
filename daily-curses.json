@@ -290,6 +290,24 @@
         ],
         "maximumLexicalSimilarity": 0.1819
       }
+    },
+    {
+      "id": 2017,
+      "date": "2026-11-05",
+      "category": "Daily Originals",
+      "text": "May every chess pawn you promote become a queen bee, obliging the other pieces to spend the next turn gathering pollen.",
+      "concept": "Chess promotion chooses the insect meaning of queen instead of the chess piece. The resulting queen bee changes the other pieces' next turn into collective pollen gathering, replacing competitive play with the duties of an insect colony.",
+      "review": {
+        "note": "Refetched current main and the complete 2,000 entry base catalogue, which retains blob 16186c3959096ea588f1b69f918d9c7f9a246649 from the earlier complete read of every text. Read all sixteen Daily Originals, including the latest snow globe release and the saved concept and review notes. The selected premise makes a chess promotion resolve the word queen into an insect rather than another chess piece, then replaces the other pieces' next turn with pollen gathering. The payoff follows a change of semantic domain and social role, not a missing game component or another ordinary inconvenience. Full catalogue searches covered chess, pawn, queen, bee, hive, pollen, promotion, coronation, foraging, checkmate, pollination, board games, kings and pieces. Entries 1411 and 1431 concern an unexpected rule question and a missing board game piece. Entries 159 and 1032 use promotion only for shop offers. No base entry has a chess pawn, queen bee, hive or a game changing into colony work. Inspected all fifteen actual lexical neighbours: 272, 289, 1845, 206, 1801, 708, 2012, 1698, 798, 205, 851, 557, 1953, 1100 and 1748. Their gathering marshmallows, torn wrappers, turn timing, broken chocolate, waiting lines, processing delays, bread clips, remotes, ripening, typos, sleeves, drinks, parcel tracking and seams do not reproduce this mechanism. Daily 2002 makes an opinion pass irrelevant judging and 2008 requires public certification of a secret ritual. This candidate has no permission gate or judge; the promotion completes but instantiates the wrong kind of queen. Daily 2005 reverses a completed cake into its preparatory shopping list, while this promotion neither rewinds time nor restores an earlier state. Daily 2006 blocks expression through a circular grievance condition; this new rule remains possible and turns a competitive move into a colony's work. Daily 2013 alphabetizes spoken words and 2014 materializes omitted examples. Neither resolves a polysemous game role into a biological one or changes the remaining pieces' task. The miniature world inversion in 2016 and the hole relocation in 2015 likewise have different triggers, operations and endings. No equivalent premise or payoff was found. The low lexical score was used only as a rejection filter.",
+        "closestIds": [
+          272,
+          289,
+          1845,
+          206,
+          1801
+        ],
+        "maximumLexicalSimilarity": 0.1286
+      }
     }
   ]
 }
